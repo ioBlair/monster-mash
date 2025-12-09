@@ -287,7 +287,20 @@
                     <!-- Light bar -->
                     <rect x="80" y="435" width="30" height="5" fill="red"/>
                   </g>
-                  <!-- Open Fridge -->
+                  <!-- Thief -->
+                  <g id="thiefInside">
+                    <!-- Body -->
+                    <rect x="545" y="130" width="30" height="50" fill="black"/>
+                    <!-- Head -->
+                    <circle cx="560" cy="115" r="15" fill="black"/>
+                    <!-- Arms -->
+                    <line x1="545" y1="140" x2="535" y2="135" stroke="black" stroke-width="6"/>
+                    <line x1="575" y1="140" x2="585" y2="135" stroke="black" stroke-width="6"/>
+                    <!-- Legs -->
+                    <line x1="550" y1="180" x2="545" y2="210" stroke="black" stroke-width="8"/>
+                    <line x1="570" y1="180" x2="575" y2="210" stroke="black" stroke-width="8"/>
+                  </g>
+                  <!-- Fridge -->
                   <g id="fridge">
                     <rect id="freezerDoor" onclick="toggleFreezer()" x="160" y="250" width="40" height="45" fill="white" stroke="gray" stroke-width="0"/>
                     <rect id="fridgeDoor" onclick="toggleFridge()" x="160" y="295" width="40" height="90" fill="white" stroke="gray" stroke-width="0"/>
@@ -353,6 +366,14 @@
                     <line x1="550" y1="180" x2="545" y2="210" stroke="black" stroke-width="8"/>
                     <line x1="570" y1="180" x2="575" y2="210" stroke="black" stroke-width="8"/>
                   </g>
+                  <!-- Eyes -->
+                  <g id="thiefEyes">
+                    <rect width="20" height="5" x="100" y="280" fill="PeachPuff"/>
+                    <circle cx="105" cy="282.5" r="2" fill="black"/>
+                    <circle cx="115" cy="282.5" r="2" fill="black"/>
+                  </g>
+
+
                   <!-- Trims & Roof -->
                   <g id="trims">
                     <!-- Trim above second floor -->
@@ -370,6 +391,9 @@
                     <!-- Door knob -->
                     <circle id="doorknob" cx="395" cy="330" r="5" fill="black"/>
                   </g>
+                  <!-- Bush -->
+                  <rect id="lBush" width="85" height="90" x="75" y="300" rx="30" ry="30" fill="green" fill="url(#halftone)" />
+                  <rect id="rBush" width="85" height="90" x="590" y="300" rx="30" ry="30" fill="green" fill="url(#halftone)" />
                   <!-- Thief Disguised -->
                   <g id="thiefDisguised">
                     <!-- Body -->
@@ -389,7 +413,7 @@
   // Function to hide all story elements
   function hideAllStoryElements() {
     const elements = [
-    'oldWoman', 'tiara', 'thiefClimbing', 'thiefDisguised', 'shoePrints',
+    'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefDisguised', 'shoePrints',
       'policeCar', 'knife'
     ];
     elements.forEach(id => {
@@ -583,6 +607,9 @@ fridgeShadow.style.display = "block"
             isUnlocked = false;
             shadow.setAttribute("cx", "956");
             shadow.setAttribute("rx", "35");
+            thiefInside.style.display = "block";
+            thiefInside.setAttribute('transform', `translate(-340,160)`);
+            toggleFridge();
             brokenWindowHole.setAttribute('opacity', "1.0");
             break;
           case 4: // New moon (completely dark)
@@ -595,13 +622,16 @@ fridgeShadow.style.display = "block"
             mask.appendChild(blackCircle);
             thiefClimbing.style.display = "block";
             thiefClimbing.setAttribute('transform', `translate(0,0)`);
+            toggleFridge();
             brokenWindowHole.setAttribute('opacity', "1.0");
+            break;
           case 5: // Waxing crescent (thin crescent on right)
             isUnlocked = true;
             shadow.setAttribute("cx", "944");
             shadow.setAttribute("rx", "35");
             thiefClimbing.style.display = "block";
             thiefClimbing.setAttribute('transform', `translate(-450,170)`);
+            thiefEyes.style.display = "block";
             brokenWindowHole.setAttribute('opacity', "0.0");
             break;
           case 6: // First quarter (half moon, left side dark)
