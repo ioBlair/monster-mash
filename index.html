@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Monster M.A.S.H.</title>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        body, html {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+        .building-container {
+          width: 100%;
+          height: 100%;
+          background-color: skyblue;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .svg-container {
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          transition: background-color 0.5s ease;
+        }
+
+        .svg-container.night-mode {
+          background-color: #1a1a2e;
+        }
+  </style>
+      </head>
+      <body>
+        <div>
+          <div class="building-container">
+            <svg class="svg-container" viewBox="0 0 1150 800" width="100%" height="100%">
+              <!-- Sun -->
+              <circle id="sun" cx="950" cy="80" r="40" fill="yellow" onclick="toggleSunMoon()" />
+              <!-- Ground -->
+              <rect width="100%" height="100%" y="400" fill="#8B4513" />
+              <defs>
+                <!-- Brick pattern -->
+                <pattern id="brick" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <rect x="0" y="0" width="20" height="20" fill="#D2CAC5" />
+                  <rect width="18" height="8" rx="2" ry="2" fill="#CCB297" />
+                  <rect width="18" height="8" x="10" y="10" rx="2" ry="2" fill="#CCB297" />
+                  <rect width="18" height="8" x="-10" y="10" rx="2" ry="2" fill="#CCB297" />
+                </pattern>
+                <!-- Scallop pattern -->
+                <pattern id="scallop" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle r="19" cx="10" cy="10" x="5" fill="url(#roof-grad)" />
+                  <circle r="19" cx="10" cy="0" x="5" fill="url(#roof-grad)" />
+                  <circle r="19" cx="10" cy="-10" x="5" fill="url(#roof-grad)" />
+                </pattern>
+
+            Masks for characters
+
+                <mask id="old-woman-top">
+                  <rect width="40" height="40" x="355" y="300" fill="white" />
+                </mask>
+                <mask id="old-woman-bottom">
+                  <rect width="40" height="30" x="355" y="340" fill="white" />
+                </mask>
+                <mask id="old-woman-hair">
+                  <rect width="40" height="25" x="355" y="260" fill="white" />
+                </mask>
+                <!-- Window masks to show interior when windows are transparent -->
+                <mask id="window1-mask">
+                  <rect width="160" height="170" x="150" y="220" fill="white" />
+                  <rect id="window1-mask-hole" width="70" height="70" x="190" y="245" fill="black" />
+                </mask>
+                <mask id="window2-mask">
+                  <rect width="160" height="170" x="150" y="40" fill="white" />
+                  <rect id="window2-mask-hole" width="70" height="70" x="190" y="65" fill="black" />
+                </mask>
+                <mask id="window3-mask">
+                  <rect width="160" height="170" x="440" y="220" fill="white" />
+                  <rect id="window3-mask-hole" width="70" height="70" x="490" y="245" fill="black" />
+                </mask>
+                <mask id="window4-mask">
+                  <rect width="140" height="170" x="300" y="40" fill="white" />
+                  <rect id="window4-mask-hole" width="70" height="70" x="340" y="65" fill="black" />
+                </mask>
+                <mask id="window5-mask">
+                  <rect width="160" height="170" x="440" y="40" fill="white" />
+                  <rect id="window5-mask-hole" width="70" height="70" x="490" y="65" fill="black" />
+                  <polygon points="525,65 525,65 530,80 540,70 535,85 555,75 540,90 560,90 545,100 560,110 540,110 555,125 535,115 540,130 530,120 525,135 520,120 510,130 515,115 495,125 510,110 490,110 505,100 490,90 510,90 495,75 515,85 510,70 520,80 525,65" />
+                </mask>
+                <mask id="brokenWindow">
+                  <rect width="160" height="170" x="440" y="40" fill="white" />
+                  <polygon id="brokenWindowHole" points="525,65 525,65 530,80 540,70 535,85 555,75 540,90 560,90 545,100 560,110 540,110 555,125 535,115 540,130 530,120 525,135 520,120 510,130 515,115 495,125 510,110 490,110 505,100 490,90 510,90 495,75 515,85 510,70 520,80 525,65" opacity="0.0" />
+                </mask>
+                <!-- Window frame -->
+                <g id="window-frame">
+                  <rect id="window" width="70" height="70" fill-opacity="0" stroke="black" stroke-width="0" />
+                  <rect width="35" height="35" x="0" y="0" fill-opacity="0" stroke="black" />
+                  <rect width="35" height="35" x="35" y="0" fill-opacity="0" stroke="black" />
+                  <rect width="35" height="35" x="35" y="35" fill-opacity="0" stroke="black" />
+                  <rect width="35" height="35" x="0" y="35" fill-opacity="0" stroke="black" />
+                </g>
+                <!-- Roof gradient -->
+                <linearGradient id="roof-grad" x1="0%" x2="0%" y1="0%" y2="100%">
+                  <stop offset="50%" stop-color="#4A653E" />
+                  <stop offset="100%" stop-color="#A0B54E" />
+                </linearGradient>
+                <!-- Wall gradient -->
+                <linearGradient id="wall-grad" x1="0%" x2="100%" y1="0%" y2="0%">
+                  <stop offset="90%" stop-color="#E8E5C8" />
+                  <stop offset="90%" stop-color="#CBB799" />
+                </linearGradient>
+                <!-- Radial gradient -->
+                <radialGradient id="radial-grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                  <stop offset="0%" stop-color="lightgreen" stop-opacity="1" />
+                  <stop offset="90%" stop-color="lightgreen" stop-opacity="0" />
+                </radialGradient>
+                <!-- Halftone -->
+                <pattern id="halftone" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+                  <circle r="1" cx="3" cy="1" fill="url(#radial-grad)" />
+                  <circle r="1" cx="1" cy="0" fill="url(#radial-grad)" />
+                  <circle r="1" cx="1" cy="2" fill="url(#radial-grad)" />
+                  <circle r="1" cx="1" cy="4" fill="url(#radial-grad)" />
+                  <circle r="1" cx="3" cy="3" fill="url(#radial-grad)" />
+                </pattern>
+                <!-- Turbulence filter -->
+                <filter id="turbulenceFilter" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="5" result="turbulence"/>
+                  <feComponentTransfer in="turbulence" result="adjusted">
+                    <feFuncR type="linear" slope="3" intercept="-0.8"/>
+                    <feFuncG type="linear" slope="3" intercept="-0.8"/>
+                    <feFuncB type="linear" slope="3" intercept="-0.8"/>
+                  </feComponentTransfer>
+                  <feComposite in="SourceGraphic" in2="adjusted" operator="in" result="comp"/>
+                  <feColorMatrix in="comp" type="matrix" values="1 0 0 0 0
+                                                    0 1 0 0 0
+                                                    0 0 1 0 0
+                                                    0 0 0 5 -1" result="final"/>
+                </filter>
+                <!-- Shadow filter for building sides -->
+                <filter id="shadowFilter" x="0" y="0" width="100%" height="100%">
+                  <feColorMatrix type="matrix" values="0.7 0 0 0 0
+                                                 0 0.7 0 0 0
+                                                 0 0 0.7 0 0
+                                                 0 0 0 1 0"/>
+                </filter>
+              </defs>
+              <!-- House Group, centered and scaled to 70% -->
+              <g transform="translate(150, 50) scale(1.1)">
+                <!-- Interior Floors -->
+                <g id="interior">
+                  <!-- First Floor Interior Sections -->
+                  <rect width="450" height="170" x="150" y="220" fill="#D2B48C" />
+                  <!-- Second Floor Interior Sections -->
+                  <rect width="450" height="170" x="150" y="40" fill="#D2B48C" />
+                </g>
+                <!-- First Floor Floor -->
+                <rect x="150" y="370" width="450" height="20" fill="brown" />
+                <!-- Second Floor Floors -->
+                <rect x="150" y="200" width="450" height="20" fill="brown" />
+                <!-- Grand Central Staircase (First Floor Interior) - Adjusted to First Floor Height -->
+                <g id="central-staircase">
+                  <!-- Staircase base structure (tapers from 150px wide at bottom to 70px at top) -->
+                  <polygon points="300,390 450,390 410,220 340,220" fill="#8B7355" />
+                  <rect x="300" y="370" width="150" height="20" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="300,370 450,370 443,350 307,350" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <rect x="307" y="334" width="136" height="16" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="307,334 443,334 437,318 313,318" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <rect x="313" y="303" width="124" height="15" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="313,303 437,303 432,288 318,288" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <rect x="318" y="274" width="114" height="14" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="318,274 432,274 427,260 323,260" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <rect x="323" y="247" width="104" height="13" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="323,247 427,247 423,234 327,234" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <rect x="327" y="222" width="96" height="12" fill="#654321" stroke="#4A3218" stroke-width="0" />
+                  <polygon points="327,222 423,222 420,211 330,211" fill="#765432" stroke="#4A3218" stroke-width="0" />
+                  <!-- Railings (tapered to match stairs) -->
+                  <!-- <line x1="300" y1="390" x2="340" y2="220" stroke="#4A3218" stroke-width="3" /> -->
+                  <!-- <line x1="450" y1="390" x2="410" y2="220" stroke="#4A3218" stroke-width="3" /> -->
+                </g>
+                <!-- Second Floor Bedroom Furniture -->
+                <g id="bedroom-furniture">
+                  <!-- Left Bedroom (150-300) -->
+                  <!-- Nightstand -->
+                  <rect x="270" y="150" width="45" height="30" fill="#8B4513" stroke="#654321" stroke-width="0" />
+                  <!-- Drawer -->
+                  <rect x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <circle cx="293" cy="165" r="3.5" fill="#654321" />
+                  <!-- Legs -->
+                  <rect x="275" y="180" width="8" height="25" fill="#654321" />
+                  <rect x="301" y="180" width="8" height="25" fill="#654321" />
+                  <!-- Lounge chair -->
+                  <g>
+                    <!-- Back rest (angled) -->
+                    <path d="M 190 170 L 185 140 L 195 140 L 200 170 Z" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <!-- Seat -->
+                    <rect x="190" y="165" rx="3" ry="3" width="50" height="25" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <!-- Front legs -->
+                    <rect x="230" y="190" width="8" height="15" fill="#654321" />
+                    <!-- Back legs -->
+                    <rect x="192" y="190" width="8" height="15" fill="#654321" />
+                  </g>
+                  <!-- Middle Bedroom (300-450) -->
+                  <!-- Bed -->
+                  <g>
+                    <!-- Pillow -->
+                    <rect x="360" y="140" rx="5" ry="5" width="60" height="15" fill="white" stroke-width="0" />
+                    <!-- Mattress -->
+                    <rect x="340" y="150" rx="6" ry="6" width="100" height="40" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <!-- Front legs -->
+                    <rect x="425" y="190" width="8" height="15" fill="#654321" />
+                    <!-- Back legs -->
+                    <rect x="345" y="190" width="8" height="15" fill="#654321" />
+                  </g>
+                  <!-- Right Bedroom (450-600) -->
+                  <!-- Dresser (side view) - moved to align with nightstands -->
+                  <rect x="480" y="130" width="100" height="60" fill="#8B4513" stroke="#654321" stroke-width="0" />
+                  <!-- Drawers -->
+                  <rect x="483" y="134" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <rect x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <rect x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <!-- Drawer knobs -->
+                  <circle cx="518" cy="141" r="3" fill="#654321" />
+                  <circle cx="518" cy="160" r="3" fill="#654321" />
+                  <circle cx="518" cy="178" r="3" fill="#654321" />
+                  <circle cx="540" cy="141" r="3" fill="#654321" />
+                  <circle cx="540" cy="160" r="3" fill="#654321" />
+                  <circle cx="540" cy="178" r="3" fill="#654321" />
+                  <!-- Dresser legs -->
+                  <rect x="495" y="190" width="8" height="15" fill="#654321" />
+                  <rect x="555" y="190" width="8" height="15" fill="#654321" />
+                  <!-- Jewelry box on top of dresser -->
+                  <g id="jewelryBox" onclick="toggleBox()">
+                    <rect x="500" y="115" width="25" height="15" fill="#A0522D" stroke="#654321" stroke-width="0" />
+                    <!-- Jewelry box lid -->
+                    <rect id="jewelryBoxLid" x="500" y="112" width="25" height="5" fill="#8B4513" stroke="#654321" stroke-width="1" />
+                    <!-- Small clasp -->
+                    <rect id="jewelryBoxClasp" x="511" y="115" width="3" height="2" fill="#FFD700" />
+                  </g>
+                </g>
+                <!-- Interior Scene Images -->
+                <g id ="storyElements">
+                  <!-- Old Woman -->
+                  <g id="oldWoman">
+                    <!-- Body -->
+                    <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-top)" fill="#8B6F47"/>
+                    <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-bottom)" fill="darkblue"/>
+                    <!-- Hair bun -->
+                    <circle cx="375" cy="275" r="8" fill="#999999"/>
+                    <!-- Head -->
+                    <circle cx="375" cy="290" r="15" fill="#C68642"/>
+                    <!-- Hair -->
+                    <circle cx="375" cy="287" r="13" mask="url(#old-woman-hair)" fill="#999999"/>
+                    <!-- Hands -->
+                    <circle cx="345" cy="345" r="4" fill="#C68642"/>
+                    <circle id="rightHand" cx="405" cy="345" r="4" fill="#C68642"/>
+                    <!-- Arms -->
+                    <line x1="360" y1="315" x2="345" y2="345" stroke="#8B6F47" stroke-width="8"/>
+                    <line id="rightArm" x1="390" y1="315" x2="405" y2="345" stroke="#8B6F47" stroke-width="8"/>
+                    <!-- Legs -->
+                    <line x1="368" y1="355" x2="368" y2="385" stroke="darkblue" stroke-width="10"/>
+                    <line x1="382" y1="355" x2="382" y2="385" stroke="darkblue" stroke-width="10"/>
+                    <!-- Feet -->
+                    <ellipse cx="365" cy="385" rx="8" ry="4" fill="black"/>
+                    <ellipse cx="385" cy="385" rx="8" ry="4" fill="black"/>
+                  </g>
+                  <!-- Tiara -->
+                  <g id="tiara">
+                    <path d="M368 278 L375 274 L382 278" stroke="gold" stroke-width="0" fill="gold"/>
+                    <circle cx="375" cy="272" r="3" fill="gold"/>
+                    <circle cx="370" cy="275" r="2" fill="gold"/>
+                    <circle cx="380" cy="275" r="2" fill="gold"/>
+                  </g>
+                  <!-- Shoe Prints (Scene 4) -->
+                  <g id="shoePrints">
+                    <ellipse cx="250" cy="420" rx="15" ry="8" fill="#654321" opacity="0.5"/>
+                    <ellipse cx="270" cy="440" rx="15" ry="8" fill="#654321" opacity="0.5"/>
+                    <ellipse cx="290" cy="460" rx="15" ry="8" fill="#654321" opacity="0.5"/>
+                  </g>
+                  <!-- Police Car (Scene 4) -->
+                  <g id="policeCar">
+                    <rect x="50" y="440" width="80" height="40" fill="#0000CD" rx="5"/>
+                    <rect x="60" y="450" width="25" height="20" fill="lightblue"/>
+                    <rect x="95" y="450" width="25" height="20" fill="lightblue"/>
+                    <circle cx="70" cy="480" r="10" fill="black"/>
+                    <circle cx="120" cy="480" r="10" fill="black"/>
+                    <!-- Light bar -->
+                    <rect x="80" y="435" width="30" height="5" fill="red"/>
+                  </g>
+                  <!-- Open Fridge -->
+                  <g id="fridge">
+                    <rect id="freezerDoor" onclick="toggleFreezer()" x="160" y="250" width="40" height="45" fill="white" stroke="gray" stroke-width="0"/>
+                    <rect id="fridgeDoor" onclick="toggleFridge()" x="160" y="295" width="40" height="90" fill="white" stroke="gray" stroke-width="0"/>
+                    <rect id="freezerShadow" x="165" y="255" width="10" height="35" fill="#E0E0E0"/>
+                    <rect id="fridgeShadow" x="165" y="300" width="10" height="80" fill="#E0E0E0"/>
+                  </g>
+                  <!-- Knife -->
+                  <g id="knife">
+                    <!-- Knife -->
+                    <line x1="540" y1="295" x2="560" y2="285" stroke="silver" stroke-width="3"/>
+                    <polygon points="550,290 555,295 565,280" fill="silver"/>
+                    <!-- Blood on knife -->
+                    <circle cx="565" cy="285" r="3" fill="red"/>
+                  </g>
+                  <!-- Exterior -->
+                  <g id="exterior">
+                    <!-- First Floor Sections -->
+                    <rect width="160" height="170" x="150" y="220" mask="url(#window1-mask)" fill="url(#brick)" filter="url(#shadowFilter)" />
+                    <rect width="130" height="170" x="310" y="220" fill="url(#brick)" />
+                    <rect width="160" height="170" x="440" y="220" mask="url(#window3-mask)" fill="url(#brick)" filter="url(#shadowFilter)" />
+                    <!-- Second Floor Sections -->
+                    <rect width="160" height="170" x="150" y="40" mask="url(#window2-mask)" fill="url(#brick)" filter="url(#shadowFilter)" />
+                    <rect width="130" height="170" x="310" y="40" mask="url(#window4-mask)" fill="url(#brick)" />
+                    <rect width="160" height="170" x="440" y="40" mask="url(#window5-mask)" fill="url(#brick)" filter="url(#shadowFilter)" />
+                    <!-- Lower Gable Trim -->
+                    <path d="M300 220 L375 150 L450 220 Z" fill="#654321" />
+                    <!-- Lower Gable -->
+                    <path d="M315 220 L375 165 L435 220 Z" fill="url(#brick)" />
+                    <!-- Trim above first floor -->
+                    <path d="M140 210 L315 210 L315 220 L150 220 Z" fill="#654321" />
+                    <path d="M435 210 L610 210 L600 220 L435 220 Z" fill="#654321" />
+                    <!-- Windows -->
+                    <g>
+                      <!-- First Floor Windows -->
+                      <a onclick="changeWindow('window1')" style="cursor: pointer;">
+                        <rect id="window1" width="70" height="70" x="190" y="245" fill="lightblue" pointer-events="all" />
+                        <use href="#window-frame" x="190" y="245" pointer-events="none"></use>
+                      </a>
+                      <a onclick="changeWindow('window3')" style="cursor: pointer;">
+                        <rect id="window3" width="70" height="70" x="490" y="245" fill="lightblue" pointer-events="all" />
+                        <use href="#window-frame" x="490" y="245" pointer-events="none"></use>
+                      </a>
+                      <!-- Second Floor Windows -->
+                      <rect id="window2" width="70" height="70" x="190" y="65" fill="lightblue" />
+                      <use href="#window-frame" x="190" y="65"></use>
+                      <rect id="window4" width="70" height="70" x="340" y="65" fill="lightblue" />
+                      <use href="#window-frame" x="340" y="65"></use>
+                      <rect id="window5" width="70" height="70" x="490" y="65" mask="url(#brokenWindow)" fill="lightblue" />
+                      <use href="#window-frame" x="490" y="65"></use>
+                    </g>
+                  </g>
+                  <!-- Exterior Scene Images -->
+                  <!-- Thief -->
+                  <g id="thiefClimbing">
+                    <!-- Body -->
+                    <rect x="545" y="130" width="30" height="50" fill="black"/>
+                    <!-- Head -->
+                    <circle cx="560" cy="115" r="15" fill="black"/>
+                    <!-- Arms -->
+                    <line x1="545" y1="140" x2="525" y2="130" stroke="black" stroke-width="6"/>
+                    <line x1="575" y1="140" x2="595" y2="130" stroke="black" stroke-width="6"/>
+                    <!-- Legs -->
+                    <line x1="550" y1="180" x2="545" y2="210" stroke="black" stroke-width="8"/>
+                    <line x1="570" y1="180" x2="575" y2="210" stroke="black" stroke-width="8"/>
+                  </g>
+                  <!-- Trims & Roof -->
+                  <g id="trims">
+                    <!-- Trim above second floor -->
+                    <path d="M140 30 L610 30 L600 40 L150 40 Z" fill="#654321" />
+                    <!-- Roof -->
+                    <path d="M150 30 L225 -30 L525 -30 L600 30 Z" fill="url(#scallop)" />
+                  </g>
+                  <!-- Upper Gable Trim -->
+                  <path d="M300 40 L375 -30 L450 40 Z" fill="#654321" />
+                  <!-- Upper Gable -->
+                  <path d="M315 40 L375 -15 L435 40 Z" fill="url(#brick)" />
+                  <!-- Door -->
+                  <g onclick="toggleExterior()" style="cursor: pointer;">
+                    <path id="door" d="M340 390 l0 -135 q30 -20 70 0 l0,135 z" fill="brown" stroke="black" stroke-width="0" />
+                    <!-- Door knob -->
+                    <circle id="doorknob" cx="395" cy="330" r="5" fill="black"/>
+                  </g>
+                  <!-- Thief Disguised -->
+                  <g id="thiefDisguised">
+                    <!-- Body -->
+                    <rect x="375" y="350" width="30" height="50" fill="DarkSlateBlue"/>
+                    <!-- Head-->
+                    <circle cx="390" cy="335" r="15" fill="PeachPuff"/>
+                    <!-- Arms -->
+                    <line x1="375" y1="360" x2="365" y2="380" stroke="DarkSlateBlue" stroke-width="6"/>
+                    <line x1="405" y1="360" x2="415" y2="380" stroke="DarkSlateBlue" stroke-width="6"/>
+                    <!-- Legs -->
+                    <line x1="380" y1="400" x2="375" y2="430" stroke="DarkSlateBlue" stroke-width="8"/>
+                    <line x1="400" y1="400" x2="405" y2="430" stroke="DarkSlateBlue" stroke-width="8"/>
+                  </g>
+                </div>
+              </div>
+              <script>
+  // Function to hide all story elements
+  function hideAllStoryElements() {
+    const elements = [
+    'oldWoman', 'tiara', 'thiefClimbing', 'thiefDisguised', 'shoePrints',
+      'policeCar', 'knife'
+    ];
+    elements.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    });
+  }
+  hideAllStoryElements();
+
+  function changeWindow(windowId) {
+    if (document.getElementById(windowId).getAttribute("fill") != "transparent") {
+      document.getElementById(windowId).setAttribute("fill", "transparent");
+    } else { document.getElementById(windowId).setAttribute("fill", "lightblue"); }
+  }
+
+  let isUnlocked = true;
+
+  function toggleExterior() {
+      const exterior = document.getElementById("exterior");
+      const door = document.getElementById("door");
+      const doorknob = document.getElementById("doorknob");
+
+      // Define the complex door opening transformation string only once
+      const transformString =
+          `translate(-70, 72) ` +
+          `skewY(-10) `;
+
+      if (isUnlocked) {
+        if (exterior.style.display === "none") {
+            exterior.style.display = "block";
+            door.removeAttribute('transform');
+            doorknob.style.display = "block";
+        } else {
+            exterior.style.display = "none";
+            door.setAttribute('transform', transformString);
+            doorknob.style.display = "none";
+        }
+      } else {
+        exterior.style.display = "block";
+        door.removeAttribute('transform');
+        doorknob.style.display = "block";
+      }
+  }
+
+  freezerShadow.style.display = "block"
+    function toggleFreezer() {
+        const freezerDoor = document.getElementById("freezerDoor");
+        if (freezerDoor.getAttribute('width') < 80) {
+          freezerDoor.setAttribute('width', "80");
+        } else {
+          freezerDoor.setAttribute('width', "40");
+        }
+        const freezerShadow = document.getElementById("freezerShadow");
+        if (freezerShadow.style.display === "block") {
+          freezerShadow.style.display = "none";
+        } else {
+          freezerShadow.style.display = "block"
+        }
+    }
+
+fridgeShadow.style.display = "block"
+  function toggleFridge() {
+      const fridgeDoor = document.getElementById("fridgeDoor");
+      if (fridgeDoor.getAttribute('width') < 80) {
+        fridgeDoor.setAttribute('width', "80");
+      } else {
+        fridgeDoor.setAttribute('width', "40");
+      }
+      const fridgeShadow = document.getElementById("fridgeShadow");
+      if (fridgeShadow.style.display === "block") {
+        fridgeShadow.style.display = "none";
+      } else {
+        fridgeShadow.style.display = "block"
+      }
+  }
+
+  let tiaraBoxed = true;
+  jewelryBox.style.display = "block"
+    function toggleBox() {
+        const jewelryBox = document.getElementById("jewelryBox");
+        const jewelryBoxLid = document.getElementById("jewelryBoxLid");
+        const jewelryBoxClasp = document.getElementById("jewelryBoxClasp");
+        if (jewelryBoxLid.getAttribute('height') > 5) {
+          jewelryBoxLid.setAttribute('height', "5");
+          jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
+          jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
+          if (tiaraBoxed) {
+            tiara.style.display = "none";
+          }
+        } else {
+          jewelryBoxLid.setAttribute('height', "15");
+          jewelryBoxLid.setAttribute('transform', `translate(0,-10)`);
+          jewelryBoxClasp.setAttribute('transform', `translate(0,-15)`);
+          if (tiaraBoxed) {
+            tiara.style.display = "block";
+            tiara.setAttribute('transform', `translate(137,-161)`);
+          }
+        }
+    }
+
+  // Moon phase toggle
+  let isMoon = false;
+  let moonPhase = 0;
+
+  function toggleSunMoon() {
+    const sun = document.getElementById("sun");
+    const svgContainer = document.querySelector(".svg-container");
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    hideAllStoryElements();
+
+    if (!isMoon) {
+      // Turn sun into moon (full moon)
+      sun.setAttribute("fill", "white");
+      svgContainer.classList.add("night-mode");
+      isMoon = true;
+      moonPhase = 0;
+    } else {
+      moonPhase = (moonPhase + 1) % 8;
+
+      if (moonPhase === 0) {
+        // Reset back to sun
+        sun.setAttribute("fill", "yellow");
+        sun.setAttribute("fill-opacity", "1");
+        sun.removeAttribute("mask");
+        svgContainer.classList.remove("night-mode");
+        isMoon = false;
+      } else {
+        sun.setAttribute("fill", "white");
+        svgContainer.classList.add("night-mode");
+        applyMoonPhase(moonPhase);
+      }
+    }
+  }
+
+    function applyMoonPhase(phase) {
+      const sun = document.getElementById("sun");
+      const svgNS = "http://www.w3.org/2000/svg";
+      let svg = document.querySelector("svg");
+
+      // Remove existing moon mask if present
+      let existingMask = document.getElementById("moonMask");
+      if (existingMask) {
+        existingMask.remove();
+      }
+
+      // Create new mask for moon phase
+      let defs = svg.querySelector("defs") || svg.insertBefore(document.createElementNS(svgNS, "defs"), svg.firstChild);
+      let mask = document.createElementNS(svgNS, "mask");
+      mask.setAttribute("id", "moonMask");
+
+      // White circle (visible part of moon)
+      let whiteCircle = document.createElementNS(svgNS, "circle");
+      whiteCircle.setAttribute("cx", "950");
+      whiteCircle.setAttribute("cy", "80");
+      whiteCircle.setAttribute("r", "40");
+      whiteCircle.setAttribute("fill", "white");
+      mask.appendChild(whiteCircle);
+
+      // Black shape for shadow
+      if (phase !== 4) { // Not new moon
+        let shadow = document.createElementNS(svgNS, "ellipse");
+        shadow.setAttribute("cy", "80");
+        shadow.setAttribute("ry", "40");
+        shadow.setAttribute("fill", "black");
+
+        jewelryBoxLid.setAttribute('height', "5");
+        jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
+        jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
+
+        switch(phase) {
+          case 1: // Waning gibbous (mostly lit, small shadow on right)
+            isUnlocked = false;
+            shadow.setAttribute("cx", "970");
+            shadow.setAttribute("rx", "20");
+            oldWoman.style.display = "block";
+            oldWoman.setAttribute('transform', `translate(140,-10)`);
+            knife.style.display = "block";
+            if (exterior.style.display === "none") {
+              toggleExterior();
+            }
+            brokenWindowHole.setAttribute('opacity', "1.0");
+            break;
+          case 2: // Last quarter (half moon, right side dark)
+            isUnlocked = false;
+            shadow.setAttribute("cx", "970");
+            shadow.setAttribute("rx", "40");
+            brokenWindowHole.setAttribute('opacity', "1.0");
+            break;
+          case 3: // Waning crescent (thin crescent on left)
+            isUnlocked = false;
+            shadow.setAttribute("cx", "956");
+            shadow.setAttribute("rx", "35");
+            brokenWindowHole.setAttribute('opacity', "1.0");
+            break;
+          case 4: // New moon (completely dark)
+            isUnlocked = true;
+            let blackCircle = document.createElementNS(svgNS, "circle");
+            blackCircle.setAttribute("cx", "950");
+            blackCircle.setAttribute("cy", "80");
+            blackCircle.setAttribute("r", "40");
+            blackCircle.setAttribute("fill", "black");
+            mask.appendChild(blackCircle);
+            thiefClimbing.style.display = "block";
+            thiefClimbing.setAttribute('transform', `translate(0,0)`);
+            brokenWindowHole.setAttribute('opacity', "1.0");
+          case 5: // Waxing crescent (thin crescent on right)
+            isUnlocked = true;
+            shadow.setAttribute("cx", "944");
+            shadow.setAttribute("rx", "35");
+            thiefClimbing.style.display = "block";
+            thiefClimbing.setAttribute('transform', `translate(-450,170)`);
+            brokenWindowHole.setAttribute('opacity', "0.0");
+            break;
+          case 6: // First quarter (half moon, left side dark)
+            isUnlocked = true;
+            tiaraBoxed = true;
+            thiefDisguised.style.display = "block";
+            oldWoman.style.display = "block";
+            oldWoman.setAttribute('transform', `translate(0,0)`);
+            shadow.setAttribute("cx", "930");
+            shadow.setAttribute("rx", "40");
+            brokenWindowHole.setAttribute('opacity', "0.0");
+            break;
+          case 7: // Waxing gibbous (mostly lit, small shadow on left)
+            isUnlocked = true;
+            shadow.setAttribute("cx", "930");
+            shadow.setAttribute("rx", "20");
+            oldWoman.style.display = "block";
+            oldWoman.setAttribute('transform', `translate(90,-185)`);
+            tiara.style.display = "block";
+            tiara.setAttribute('transform', `translate(125,-160)`);
+            rightHand.setAttribute('transform', `translate(0,-40)`);
+            rightArm.setAttribute("y2", "305");
+            jewelryBoxLid.setAttribute('height', "15");
+            jewelryBoxLid.setAttribute('transform', `translate(0,-10)`);
+            jewelryBoxClasp.setAttribute('transform', `translate(0,-15)`);
+            brokenWindowHole.setAttribute('opacity', "0.0");
+            break;
+        }
+        mask.appendChild(shadow);
+      }
+
+      defs.appendChild(mask);
+
+      // Apply mask to sun
+      sun.setAttribute("mask", "url(#moonMask)");
+
+      // For new moon, make it semi-transparent but still clickable
+      if (phase === 4) {
+        sun.setAttribute("fill-opacity", "0.2");
+        sun.setAttribute("stroke", "white");
+        sun.setAttribute("stroke-width", "1");
+      } else {
+        sun.setAttribute("fill-opacity", "1");
+        sun.removeAttribute("stroke");
+        sun.removeAttribute("stroke-width");
+      }
+    }
+
+              </script>
+            </body>
+          </html>
