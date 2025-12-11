@@ -60,7 +60,7 @@
                   <rect x="0" y="0" width="20" height="20" fill="DarkGreen" />
                   <ellipse cx="5" cy="5" rx="1" ry="2" transform="rotate(-10)" fill="ForestGreen" />
                   <ellipse cx="16" cy="10" rx="1" ry="2" transform="rotate(-10)" fill="ForestGreen" />
-                  <ellipse cx="18" cy="15" rx="1" ry="2" transform="rotate(10)" fill="ForestGreen" />
+                  <ellipse cx="15" cy="12" rx="1" ry="2" transform="rotate(10)" fill="ForestGreen" />
                 </pattern>
 
                 <!--Masks for characters-->
@@ -72,6 +72,9 @@
                 </mask>
                 <mask id="old-woman-hair">
                   <rect width="40" height="25" x="355" y="260" fill="white" />
+                </mask>
+                <mask id="hatMask">
+                  <rect width="40" height="15" x="375" y="315" fill="white" />
                 </mask>
 
                 <!-- Window masks to show interior when windows are transparent -->
@@ -195,8 +198,8 @@
                   <rect x="270" y="150" width="45" height="30" fill="#8B4513" stroke="#654321" stroke-width="0" />
                   <!-- Drawer -->
                   <polygon points="277,158 308,158 313,172 272,172" fill="SandyBrown" stroke="#654321" stroke-width="0" />
-                  <g id="dresserDrawer" class="closed">
-                    <rect onclick="openDrawer()" x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <g id="nightstandDrawer" onclick="openDrawer()" class="closed">
+                    <rect x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
                     <circle cx="293" cy="165" r="3.5" fill="#654321" />
                   </g>
                   <!-- Legs -->
@@ -238,13 +241,13 @@
                   <rect x="483" y="134" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
                   <polygon points="488,152 572,152 577,167 483,167" fill="SandyBrown" stroke="#654321" stroke-width="0" />
                   <polygon points="488,170 572,170 577,185 483,185" fill="SandyBrown" stroke="#654321" stroke-width="0" />
-                  <g id="topsDrawer" class="closed">
-                    <rect onclick="newTop()" x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <g id="topsDrawer" onclick="newTop()" class="closed">
+                    <rect x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
                     <circle cx="518" cy="160" r="3" fill="#654321" />
                     <circle cx="540" cy="160" r="3" fill="#654321" />
                   </g>
-                  <g id="bottomsDrawer" class="closed">
-                    <rect onclick="newBottom()" x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <g id="bottomsDrawer" onclick="newBottom()" class="closed">
+                    <rect x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
                     <circle cx="518" cy="178" r="3" fill="#654321" />
                     <circle cx="540" cy="178" r="3" fill="#654321" />
                   </g>
@@ -265,36 +268,18 @@
                 </g>
                 <!-- Interior Scene Images -->
                 <g id ="storyElements">
-                  <!-- Old Woman -->
-                  <g id="oldWoman">
-                    <!-- Body -->
-                    <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-top)" fill="#8B6F47"/>
-                    <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-bottom)" fill="darkblue"/>
-                    <!-- Hair bun -->
-                    <circle cx="375" cy="275" r="8" fill="#999999"/>
-                    <!-- Head -->
-                    <circle cx="375" cy="290" r="15" fill="#C68642"/>
-                    <!-- Hair -->
-                    <circle cx="375" cy="287" r="13" mask="url(#old-woman-hair)" fill="#999999"/>
-                    <!-- Hands -->
-                    <circle cx="345" cy="345" r="4" fill="#C68642"/>
-                    <circle id="rightHand" class="lowered" cx="405" cy="345" r="4" fill="#C68642"/>
-                    <!-- Arms -->
-                    <line x1="360" y1="315" x2="345" y2="345" stroke="#8B6F47" stroke-width="8"/>
-                    <line id="rightArm" x1="390" y1="315" x2="405" y2="345" stroke="#8B6F47" stroke-width="8"/>
-                    <!-- Legs -->
-                    <line x1="368" y1="355" x2="368" y2="385" stroke="darkblue" stroke-width="10"/>
-                    <line x1="382" y1="355" x2="382" y2="385" stroke="darkblue" stroke-width="10"/>
-                    <!-- Feet -->
-                    <ellipse cx="365" cy="385" rx="8" ry="4" fill="black"/>
-                    <ellipse cx="385" cy="385" rx="8" ry="4" fill="black"/>
-                  </g>
                   <!-- Tiara -->
                   <g id="tiara">
                     <path d="M368 278 L375 274 L382 278" stroke="gold" stroke-width="0" fill="gold"/>
                     <circle cx="375" cy="272" r="3" fill="gold"/>
                     <circle cx="370" cy="275" r="2" fill="gold"/>
                     <circle cx="380" cy="275" r="2" fill="gold"/>
+                  </g>
+                  <g id="doorKey" transform="rotate(-30) translate(-115, 128)">
+                    <circle cx="290" cy="140" r="4" stroke="gold" stroke-width="3"  fill="transparent"/>
+                    <rect x="289" y="145" width="3" height="10" stroke="gold" stroke-width="0" fill="gold"/>
+                    <rect x="292" y="148" width="3" height="2" stroke="gold" stroke-width="0" fill="gold"/>
+                    <rect x="292" y="151" width="3" height="3" stroke="gold" stroke-width="0" fill="gold"/>
                   </g>
                   <!-- Shoe Prints -->
                   <g id="shoePrints">
@@ -313,28 +298,52 @@
                     <rect x="80" y="435" width="30" height="5" fill="red"/>
                   </g>
                   <!-- Thief -->
-                  <g id="thiefInside">
-                    <!-- Body -->
-                    <rect x="545" y="130" width="30" height="50" fill="black"/>
-                    <!-- Head -->
-                    <circle cx="560" cy="115" r="15" fill="black"/>
-                    <!-- Arms -->
-                    <line x1="545" y1="140" x2="535" y2="135" stroke="black" stroke-width="6"/>
-                    <line x1="575" y1="140" x2="585" y2="135" stroke="black" stroke-width="6"/>
-                    <!-- Legs -->
-                    <line x1="550" y1="180" x2="545" y2="210" stroke="black" stroke-width="8"/>
-                    <line x1="570" y1="180" x2="575" y2="210" stroke="black" stroke-width="8"/>
+                  <!-- Head -->
+                  <g id="thiefInsideHead">
+                    <circle cx="560" cy="120" r="15" fill="black"/>
                     <!-- Eyes -->
-                    <rect width="15" height="5" x="545" y="110" fill="PeachPuff"/>
-                    <circle cx="550" cy="112.5" r="2" fill="black"/>
-                    </g>
+                    <rect width="15" height="5" x="545" y="115" fill="PeachPuff"/>
                   </g>
+                  <g id="thiefDeadEyes">
+                    <line x1="553" y1="306" x2="557" y2="309" stroke="black" stroke-width="1" />
+                    <line x1="553" y1="309" x2="557" y2="306" stroke="black" stroke-width="1" />
+                  </g>
+                </g>
+                <g id="thiefInside">
+                  <!-- Body -->
+                  <rect x="545" y="135" width="30" height="50" fill="black"/>
+                  <!-- Eye dots -->
+                  <circle cx="550" cy="117.5" r="2" fill="black"/>
+                  <!-- Arms -->
+                  <line x1="545" y1="145" x2="535" y2="140" stroke="black" stroke-width="6"/>
+                  <line x1="575" y1="145" x2="585" y2="140" stroke="black" stroke-width="6"/>
+                  <!-- Legs -->
+                  <line x1="550" y1="185" x2="545" y2="215" stroke="black" stroke-width="8"/>
+                  <line x1="570" y1="185" x2="575" y2="215" stroke="black" stroke-width="8"/>
+                </g>
                   <!-- Fridge -->
                   <g id="fridge">
-                    <rect id="freezerDoor" onclick="toggleFreezer()" x="160" y="250" width="40" height="45" fill="white" stroke="gray" stroke-width="0"/>
-                    <rect id="fridgeDoor" onclick="toggleFridge()" x="160" y="295" width="40" height="90" fill="white" stroke="gray" stroke-width="0"/>
-                    <rect id="freezerShadow" x="165" y="255" width="10" height="35" fill="#E0E0E0"/>
-                    <rect id="fridgeShadow" x="165" y="300" width="10" height="80" fill="#E0E0E0"/>
+                    <rect id="freezerDoor" onclick="toggleFreezer()" x="160" y="240" width="40" height="45" fill="white" stroke="gray" stroke-width="0"/>
+                    <rect id="fridgeDoor" onclick="toggleFridge()" x="160" y="285" width="40" height="90" fill="white" stroke="gray" stroke-width="0"/>
+                    <rect id="freezerShadow" x="165" y="245" width="10" height="35" fill="#E0E0E0"/>
+                    <rect id="fridgeShadow" x="165" y="290" width="10" height="80" fill="#E0E0E0"/>
+                  </g>
+                  <!-- Dining Table -->
+                  <g id="dining-table">
+                    <ellipse cx="560" cy="325" rx="30" ry="5" />
+                    <path d="M 560 330 L 560 350 Q 560 375 540 375" fill="transparent" stroke="black" stroke-width="3" />
+                    <path d="M 560 330 L 560 350 Q 560 375 580 375" fill="transparent" stroke="black" stroke-width="3" />
+                  </g>
+                  <!-- Dining chair -->
+                  <g id="dining-chair">
+                    <!-- Back rest -->
+                    <path d="M 475 345 L 475 300 L 485 300 L 485 345 Z" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <!-- Seat -->
+                    <rect x="475" y="340" rx="1" ry="1" width="50" height="10" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <!-- Front legs -->
+                    <rect x="515" y="350" width="6" height="25" fill="#654321" />
+                    <!-- Back legs -->
+                    <rect x="477" y="350" width="6" height="25" fill="#654321" />
                   </g>
                   <!-- Knife -->
                   <g id="knife">
@@ -342,7 +351,39 @@
                     <line x1="540" y1="295" x2="560" y2="285" stroke="silver" stroke-width="3"/>
                     <polygon points="550,290 555,295 565,280" fill="silver"/>
                     <!-- Blood on knife -->
-                    <circle cx="565" cy="285" r="3" fill="red"/>
+                    <circle cx="562" cy="283" r="1" fill="red"/>
+                    <circle cx="561" cy="284.5" r="1.2" fill="red"/>
+                    <circle cx="560" cy="286" r="1.6" fill="red"/>
+                  </g>
+                  <!-- Blood on table -->
+                  <g id="blood">
+                    <ellipse cx="560" cy="325" rx="15" ry="2" fill="red"/>
+                  </g>
+                  <!-- Old Woman -->
+                  <g id="oldWoman">
+                    <!-- Body -->
+                    <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-top)" fill="#8B6F47"/>
+                    <!-- Hair bun -->
+                    <circle cx="375" cy="275" r="8" fill="#999999"/>
+                    <!-- Head -->
+                    <circle cx="375" cy="290" r="15" fill="#C68642"/>
+                    <!-- Hair -->
+                    <circle cx="375" cy="287" r="13" mask="url(#old-woman-hair)" fill="#999999"/>
+                    <!-- Hands -->
+                    <circle cx="345" cy="345" r="4" fill="#C68642"/>
+                    <circle id="rightHand" class="lowered" cx="405" cy="345" r="4" fill="#C68642"/>
+                    <!-- Arms -->
+                    <line x1="360" y1="315" x2="345" y2="345" stroke="#8B6F47" stroke-width="8"/>
+                    <line id="rightArm" x1="390" y1="315" x2="405" y2="345" stroke="#8B6F47" stroke-width="8"/>
+                    <!-- Legs -->
+                    <g id="womanPants">
+                      <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-bottom)" fill="darkblue"/>
+                      <line x1="368" y1="355" x2="368" y2="385" stroke="darkblue" stroke-width="10"/>
+                      <line x1="382" y1="355" x2="382" y2="385" stroke="darkblue" stroke-width="10"/>
+                    </g>
+                    <!-- Feet -->
+                    <ellipse cx="365" cy="385" rx="8" ry="4" fill="black"/>
+                    <ellipse cx="385" cy="385" rx="8" ry="4" fill="black"/>
                   </g>
                   <!-- Exterior -->
                   <g id="exterior">
@@ -468,6 +509,8 @@
                     <rect x="375" y="350" width="30" height="50" fill="SteelBlue"/>
                     <!-- Head-->
                     <circle cx="390" cy="335" r="15" fill="PeachPuff"/>
+                    <circle id="thiefHat" cx="390" cy="334" r="16" mask="url(#hatMask)" fill="SteelBlue"/>
+                    <ellipse id="thiefHat" cx="380" cy="327" rx="16" ry="2" fill="SteelBlue"/>
                     <!-- Arms -->
                     <line x1="375" y1="360" x2="365" y2="380" stroke="SteelBlue" stroke-width="6"/>
                     <line x1="405" y1="360" x2="415" y2="380" stroke="SteelBlue" stroke-width="6"/>
@@ -478,7 +521,7 @@
                   </svg>
                 </div>
               </div>
-              <script>// --- 1. CACHE ALL NECESSARY ELEMENTS ONCE ---
+              <script>
 const DOMElements = {
     exterior: document.getElementById("exterior"),
     door: document.getElementById("door"),
@@ -487,8 +530,8 @@ const DOMElements = {
     freezerShadow: document.getElementById("freezerShadow"),
 
     storyElements: [
-        'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefDisguised',
-        'sleepingWoman', 'shoePrints', 'policeCar', 'knife'
+        'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefInsideHead', 'thiefDeadEyes', 'thiefDisguised',
+        'sleepingWoman', 'shoePrints', 'policeCar', 'knife', 'blood'
     ].map(id => document.getElementById(id)).filter(el => el != null),
 };
 
@@ -497,10 +540,13 @@ let moonPhase = 0;
 let isUnlocked = true;
 let hasPermanentKey = false;
 const DOOR_OPEN_TRANSFORM = 'translate(-70, 72) skewY(-10)';
+const doorKey = document.getElementById("doorKey");
+doorKey.style.display = "none";
 
 function usePermanentKey() {
     if (!hasPermanentKey) {
         hasPermanentKey = true;
+        doorKey.style.display = "block";
         updateDoorLockStatus(currentMoonPhase);
     }
 }
@@ -511,19 +557,17 @@ function updateDoorLockStatus(phase) {
         isUnlocked = true;
     }
     else if (phase > 0 && phase < 4) {
+        isUnlocked = false;
     }
     else {
         isUnlocked = true;
     }
-
-    console.log(`Door is now ${isUnlocked ? 'UNLOCKED' : 'LOCKED'} (Phase: ${phase}, Key: ${hasPermanentKey ? 'YES' : 'NO'})`);
 }
 
 function toggleExterior() {
     if (!isUnlocked) {
         // If locked, ensure it looks closed and do nothing else
         closeDoor();
-        console.log("The door is locked! Check the moon phase.");
         return;
     }
 
@@ -596,14 +640,14 @@ fridgeShadow.style.display = "block";
     }
 
   function openDrawer() {
-      const dresserDrawer = document.getElementById("dresserDrawer");
-      if (dresserDrawer.getAttribute('class') === "closed") {
-        dresserDrawer.setAttribute('transform', `translate(0,5)`);
-        dresserDrawer.setAttribute('class', "open");
+      const nightstandDrawer = document.getElementById("nightstandDrawer");
+      if (nightstandDrawer.getAttribute('class') === "closed") {
+        nightstandDrawer.setAttribute('transform', `translate(0,5)`);
+        nightstandDrawer.setAttribute('class', "open");
         usePermanentKey();
       } else {
-        dresserDrawer.setAttribute('transform', `translate(0,0)`);
-        dresserDrawer.setAttribute('class', "closed");
+        nightstandDrawer.setAttribute('transform', `translate(0,0)`);
+        nightstandDrawer.setAttribute('class', "closed");
       }
     }
 
@@ -618,15 +662,47 @@ fridgeShadow.style.display = "block";
       }
     }
 
+    const colorPalettes = [
+        { name: "Ocean Teal", hex: "#008080" },
+        { name: "Deep Coral", hex: "#FF7F50" },
+        { name: "Royal Purple", hex: "#7851A9" },
+        { name: "Forest Green", hex: "#228B22" },
+        { name: "Sunny Yellow", hex: "#FFD700" },
+        { name: "Charcoal Gray", hex: "#36454F" },
+        { name: "Cerise Pink", hex: "#DE3163" }
+    ];
+    let currentColorIndex = 0;
+
     function newBottom() {
         const bottomsDrawer = document.getElementById("bottomsDrawer");
         if (bottomsDrawer.getAttribute('class') === "closed") {
           bottomsDrawer.setAttribute('transform', `translate(0,5)`);
           bottomsDrawer.setAttribute('class', "open");
+          updatePantsColor();
         } else {
           bottomsDrawer.setAttribute('transform', `translate(0,0)`);
           bottomsDrawer.setAttribute('class', "closed");
         }
+      }
+
+      function updatePantsColor() {
+          const color = colorPalettes[currentColorIndex];
+
+          if (!color) {
+              currentColorIndex = 0;
+              return;
+          }
+          const pantsGroup = document.getElementById('womanPants');
+          if (!pantsGroup) {
+          } else {
+              const elementsToStyle = pantsGroup.querySelectorAll('path, circle, rect, polygon, line, polyline, ellipse');
+
+              elementsToStyle.forEach(element => {
+                  element.style.fill = color.hex;
+                  element.style.stroke = color.hex;
+              });
+          }
+          currentColorIndex = (currentColorIndex + 1) % colorPalettes.length;
       }
 
   let tiaraBoxed = true;
@@ -747,9 +823,13 @@ fridgeShadow.style.display = "block";
                     oldWoman.style.display = "block";
                     oldWoman.setAttribute('transform', `translate(140,-10)`);
                     knife.style.display = "block";
-                    if (exterior.style.display === "none") {
+                    if (!hasPermanentKey && exterior.style.display === "none") {
                       toggleExterior();
                     }
+                    thiefInsideHead.style.display = "block";
+                    thiefInsideHead.setAttribute('transform', `translate(5,190)`);
+                    thiefDeadEyes.style.display = "block";
+                    blood.style.display = "block";
                     brokenWindowHole.setAttribute('opacity', "1.0");
                     windowBreak.setAttribute('opacity', "1.0");
                     toggleRaiseHand();
@@ -767,6 +847,8 @@ fridgeShadow.style.display = "block";
                     sleepingWoman.style.display = "block";
                     thiefInside.style.display = "block";
                     thiefInside.setAttribute('transform', `translate(-340,160)`);
+                    thiefInsideHead.style.display = "block";
+                    thiefInsideHead.setAttribute('transform', `translate(-340,160)`);
                     brokenWindowHole.setAttribute('opacity', "1.0");
                     windowBreak.setAttribute('opacity', "1.0");
                     toggleFridge();
