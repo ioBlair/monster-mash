@@ -11,11 +11,12 @@
           width: 100%;
           height: 100%;
           overflow: hidden;
+          background-color: Sienna;
         }
         .building-container {
           width: 100%;
           height: 100%;
-          background-color: skyblue;
+          background-color: LightSkyBlue;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -39,24 +40,30 @@
               <!-- Sun -->
               <circle id="sun" cx="950" cy="80" r="40" fill="yellow" onclick="toggleSunMoon()" />
               <!-- Ground -->
-              <rect width="100%" height="100%" y="400" fill="#8B4513" />
+              <rect width="100%" height="100%" y="400" fill="Sienna" />
               <defs>
                 <!-- Brick pattern -->
                 <pattern id="brick" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="20" height="20" fill="#D2CAC5" />
-                  <rect width="18" height="8" rx="2" ry="2" fill="#CCB297" />
-                  <rect width="18" height="8" x="10" y="10" rx="2" ry="2" fill="#CCB297" />
-                  <rect width="18" height="8" x="-10" y="10" rx="2" ry="2" fill="#CCB297" />
+                  <rect x="0" y="0" width="20" height="20" fill="FloralWhite" />
+                  <rect width="18" height="8" rx="2" ry="2" fill="Brown" />
+                  <rect width="18" height="8" x="10" y="10" rx="2" ry="2" fill="Brown" />
+                  <rect width="18" height="8" x="-10" y="10" rx="2" ry="2" fill="Brown" />
                 </pattern>
-                <!-- Scallop pattern -->
-                <pattern id="scallop" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                <!-- Roof pattern -->
+                <pattern id="roof" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
                   <circle r="19" cx="10" cy="10" x="5" fill="url(#roof-grad)" />
                   <circle r="19" cx="10" cy="0" x="5" fill="url(#roof-grad)" />
                   <circle r="19" cx="10" cy="-10" x="5" fill="url(#roof-grad)" />
                 </pattern>
+                <!-- Leaf pattern -->
+                <pattern id="leaf" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <rect x="0" y="0" width="20" height="20" fill="DarkGreen" />
+                  <ellipse cx="5" cy="5" rx="1" ry="2" transform="rotate(-10)" fill="ForestGreen" />
+                  <ellipse cx="16" cy="10" rx="1" ry="2" transform="rotate(-10)" fill="ForestGreen" />
+                  <ellipse cx="18" cy="15" rx="1" ry="2" transform="rotate(10)" fill="ForestGreen" />
+                </pattern>
 
-            Masks for characters
-
+                <!--Masks for characters-->
                 <mask id="old-woman-top">
                   <rect width="40" height="40" x="355" y="300" fill="white" />
                 </mask>
@@ -66,6 +73,7 @@
                 <mask id="old-woman-hair">
                   <rect width="40" height="25" x="355" y="260" fill="white" />
                 </mask>
+
                 <!-- Window masks to show interior when windows are transparent -->
                 <mask id="window1-mask">
                   <rect width="160" height="170" x="150" y="220" fill="white" />
@@ -94,16 +102,18 @@
                 </mask>
                 <!-- Window frame -->
                 <g id="window-frame">
-                  <rect id="window" width="70" height="70" fill-opacity="0" stroke="black" stroke-width="0" />
+                  <rect id="window" width="70" height="70" fill-opacity="0" stroke="black" stroke-width="2" />
                   <rect width="35" height="35" x="0" y="0" fill-opacity="0" stroke="black" />
                   <rect width="35" height="35" x="35" y="0" fill-opacity="0" stroke="black" />
                   <rect width="35" height="35" x="35" y="35" fill-opacity="0" stroke="black" />
                   <rect width="35" height="35" x="0" y="35" fill-opacity="0" stroke="black" />
+                  <line x1="-5" y1="0" x2="75" y2="0" stroke="brown" stroke-width="7" />
+                  <line x1="-5" y1="70" x2="75" y2="70" stroke="brown" stroke-width="7" />
                 </g>
                 <!-- Roof gradient -->
                 <linearGradient id="roof-grad" x1="0%" x2="0%" y1="0%" y2="100%">
-                  <stop offset="50%" stop-color="#4A653E" />
-                  <stop offset="100%" stop-color="#A0B54E" />
+                  <stop offset="50%" stop-color="Peru" />
+                  <stop offset="100%" stop-color="SaddleBrown" />
                 </linearGradient>
                 <!-- Wall gradient -->
                 <linearGradient id="wall-grad" x1="0%" x2="100%" y1="0%" y2="0%">
@@ -112,8 +122,8 @@
                 </linearGradient>
                 <!-- Radial gradient -->
                 <radialGradient id="radial-grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                  <stop offset="0%" stop-color="lightgreen" stop-opacity="1" />
-                  <stop offset="90%" stop-color="lightgreen" stop-opacity="0" />
+                  <stop offset="0%" stop-color="lightDarkGreen" stop-opacity="1" />
+                  <stop offset="90%" stop-color="lightDarkGreen" stop-opacity="0" />
                 </radialGradient>
                 <!-- Halftone -->
                 <pattern id="halftone" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
@@ -184,8 +194,11 @@
                   <!-- Nightstand -->
                   <rect x="270" y="150" width="45" height="30" fill="#8B4513" stroke="#654321" stroke-width="0" />
                   <!-- Drawer -->
-                  <rect x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                  <circle cx="293" cy="165" r="3.5" fill="#654321" />
+                  <polygon points="277,158 308,158 313,172 272,172" fill="SandyBrown" stroke="#654321" stroke-width="0" />
+                  <g id="dresserDrawer" class="closed">
+                    <rect onclick="openDrawer()" x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                    <circle cx="293" cy="165" r="3.5" fill="#654321" />
+                  </g>
                   <!-- Legs -->
                   <rect x="275" y="180" width="8" height="25" fill="#654321" />
                   <rect x="301" y="180" width="8" height="25" fill="#654321" />
@@ -204,28 +217,40 @@
                   <!-- Bed -->
                   <g>
                     <!-- Pillow -->
-                    <rect x="360" y="140" rx="5" ry="5" width="60" height="15" fill="white" stroke-width="0" />
+                    <rect x="360" y="130" rx="5" ry="5" width="60" height="15" fill="white" stroke-width="0" />
                     <!-- Mattress -->
-                    <rect x="340" y="150" rx="6" ry="6" width="100" height="40" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <rect x="340" y="140" rx="6" ry="6" width="100" height="50" fill="#8B7355" stroke="#654321" stroke-width="0" />
                     <!-- Front legs -->
                     <rect x="425" y="190" width="8" height="15" fill="#654321" />
                     <!-- Back legs -->
                     <rect x="345" y="190" width="8" height="15" fill="#654321" />
                   </g>
+                  <g id="sleepingWoman">
+                    <!-- Sleeping woman -->
+                    <!-- Head -->
+                    <circle cx="390" cy="133" r="15" fill="#C68642"/>
+                    <ellipse cx="390" cy="145" rx="40" ry="15" fill="Snow"/>
+                  </g>
                   <!-- Right Bedroom (450-600) -->
-                  <!-- Dresser (side view) - moved to align with nightstands -->
+                  <!-- Dresser -->
                   <rect x="480" y="130" width="100" height="60" fill="#8B4513" stroke="#654321" stroke-width="0" />
                   <!-- Drawers -->
                   <rect x="483" y="134" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                  <rect x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                  <rect x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                  <polygon points="488,152 572,152 577,167 483,167" fill="SandyBrown" stroke="#654321" stroke-width="0" />
+                  <polygon points="488,170 572,170 577,185 483,185" fill="SandyBrown" stroke="#654321" stroke-width="0" />
+                  <g id="topsDrawer" class="closed">
+                    <rect onclick="newTop()" x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                    <circle cx="518" cy="160" r="3" fill="#654321" />
+                    <circle cx="540" cy="160" r="3" fill="#654321" />
+                  </g>
+                  <g id="bottomsDrawer" class="closed">
+                    <rect onclick="newBottom()" x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
+                    <circle cx="518" cy="178" r="3" fill="#654321" />
+                    <circle cx="540" cy="178" r="3" fill="#654321" />
+                  </g>
                   <!-- Drawer knobs -->
                   <circle cx="518" cy="141" r="3" fill="#654321" />
-                  <circle cx="518" cy="160" r="3" fill="#654321" />
-                  <circle cx="518" cy="178" r="3" fill="#654321" />
                   <circle cx="540" cy="141" r="3" fill="#654321" />
-                  <circle cx="540" cy="160" r="3" fill="#654321" />
-                  <circle cx="540" cy="178" r="3" fill="#654321" />
                   <!-- Dresser legs -->
                   <rect x="495" y="190" width="8" height="15" fill="#654321" />
                   <rect x="555" y="190" width="8" height="15" fill="#654321" />
@@ -253,7 +278,7 @@
                     <circle cx="375" cy="287" r="13" mask="url(#old-woman-hair)" fill="#999999"/>
                     <!-- Hands -->
                     <circle cx="345" cy="345" r="4" fill="#C68642"/>
-                    <circle id="rightHand" cx="405" cy="345" r="4" fill="#C68642"/>
+                    <circle id="rightHand" class="lowered" cx="405" cy="345" r="4" fill="#C68642"/>
                     <!-- Arms -->
                     <line x1="360" y1="315" x2="345" y2="345" stroke="#8B6F47" stroke-width="8"/>
                     <line id="rightArm" x1="390" y1="315" x2="405" y2="345" stroke="#8B6F47" stroke-width="8"/>
@@ -271,13 +296,13 @@
                     <circle cx="370" cy="275" r="2" fill="gold"/>
                     <circle cx="380" cy="275" r="2" fill="gold"/>
                   </g>
-                  <!-- Shoe Prints (Scene 4) -->
+                  <!-- Shoe Prints -->
                   <g id="shoePrints">
                     <ellipse cx="250" cy="420" rx="15" ry="8" fill="#654321" opacity="0.5"/>
                     <ellipse cx="270" cy="440" rx="15" ry="8" fill="#654321" opacity="0.5"/>
                     <ellipse cx="290" cy="460" rx="15" ry="8" fill="#654321" opacity="0.5"/>
                   </g>
-                  <!-- Police Car (Scene 4) -->
+                  <!-- Police Car -->
                   <g id="policeCar">
                     <rect x="50" y="440" width="80" height="40" fill="#0000CD" rx="5"/>
                     <rect x="60" y="450" width="25" height="20" fill="lightblue"/>
@@ -299,6 +324,10 @@
                     <!-- Legs -->
                     <line x1="550" y1="180" x2="545" y2="210" stroke="black" stroke-width="8"/>
                     <line x1="570" y1="180" x2="575" y2="210" stroke="black" stroke-width="8"/>
+                    <!-- Eyes -->
+                    <rect width="15" height="5" x="545" y="110" fill="PeachPuff"/>
+                    <circle cx="550" cy="112.5" r="2" fill="black"/>
+                    </g>
                   </g>
                   <!-- Fridge -->
                   <g id="fridge">
@@ -326,30 +355,37 @@
                     <rect width="130" height="170" x="310" y="40" mask="url(#window4-mask)" fill="url(#brick)" />
                     <rect width="160" height="170" x="440" y="40" mask="url(#window5-mask)" fill="url(#brick)" filter="url(#shadowFilter)" />
                     <!-- Lower Gable Trim -->
-                    <path d="M300 220 L375 150 L450 220 Z" fill="#654321" />
+                    <path d="M300 220 L375 150 L450 220 Z" fill="Brown" />
                     <!-- Lower Gable -->
                     <path d="M315 220 L375 165 L435 220 Z" fill="url(#brick)" />
                     <!-- Trim above first floor -->
-                    <path d="M140 210 L315 210 L315 220 L150 220 Z" fill="#654321" />
-                    <path d="M435 210 L610 210 L600 220 L435 220 Z" fill="#654321" />
+                    <path d="M140 210 L315 210 L315 220 L150 220 Z" fill="Brown" />
+                    <path d="M435 210 L610 210 L600 220 L435 220 Z" fill="Brown" />
                     <!-- Windows -->
                     <g>
                       <!-- First Floor Windows -->
-                      <a onclick="changeWindow('window1')" style="cursor: pointer;">
+                      <g onclick="changeWindow('window1')">
                         <rect id="window1" width="70" height="70" x="190" y="245" fill="lightblue" pointer-events="all" />
                         <use href="#window-frame" x="190" y="245" pointer-events="none"></use>
-                      </a>
-                      <a onclick="changeWindow('window3')" style="cursor: pointer;">
+                      </g>
+                      <g onclick="changeWindow('window3')">
                         <rect id="window3" width="70" height="70" x="490" y="245" fill="lightblue" pointer-events="all" />
                         <use href="#window-frame" x="490" y="245" pointer-events="none"></use>
-                      </a>
+                      </g>
                       <!-- Second Floor Windows -->
-                      <rect id="window2" width="70" height="70" x="190" y="65" fill="lightblue" />
-                      <use href="#window-frame" x="190" y="65"></use>
-                      <rect id="window4" width="70" height="70" x="340" y="65" fill="lightblue" />
-                      <use href="#window-frame" x="340" y="65"></use>
-                      <rect id="window5" width="70" height="70" x="490" y="65" mask="url(#brokenWindow)" fill="lightblue" />
-                      <use href="#window-frame" x="490" y="65"></use>
+                      <g onclick="changeWindow('window2')">
+                        <rect id="window2" width="70" height="70" x="190" y="65" fill="lightblue" />
+                        <use href="#window-frame" x="190" y="65"></use>
+                      </g>
+                      <g onclick="changeWindow('window4')">
+                        <rect id="window4" width="70" height="70" x="340" y="65" fill="lightblue" />
+                        <use href="#window-frame" x="340" y="65"></use>
+                      </g>
+                      <g onclick="changeWindow('window5')" mask="url(#brokenWindow)">
+                        <polygon id="windowBreak" points="525,65 525,65 530,80 540,70 535,85 555,75 540,90 560,90 545,100 560,110 540,110 555,125 535,115 540,130 530,120 525,135 520,120 510,130 515,115 495,125 510,110 490,110 505,100 490,90 510,90 495,75 515,85 510,70 520,80 525,65" opacity="0.0" fill="transparent" stroke="AliceBlue" stroke-width="1" />
+                        <rect id="window5" width="70" height="70" x="490" y="65" fill="lightblue" />
+                        <use href="#window-frame" x="490" y="65"></use>
+                      </g>
                     </g>
                   </g>
                   <!-- Exterior Scene Images -->
@@ -368,130 +404,233 @@
                   </g>
                   <!-- Eyes -->
                   <g id="thiefEyes">
-                    <rect width="20" height="5" x="100" y="280" fill="PeachPuff"/>
-                    <circle cx="105" cy="282.5" r="2" fill="black"/>
-                    <circle cx="115" cy="282.5" r="2" fill="black"/>
+                    <rect width="20" height="5" x="80" y="280" fill="PeachPuff"/>
+                    <circle cx="85" cy="282.5" r="2" fill="black"/>
+                    <circle cx="95" cy="282.5" r="2" fill="black"/>
                   </g>
 
-
-                  <!-- Trims & Roof -->
+                  <!-- Mini moon doormat -->
+                  <g transform="translate(321, 415)" onclick="refresh()">
+                  <rect x="-10" y="-25" width="128" height="50" rx="5" fill="black" />
+                      <circle cx="0" cy="0" r="5" fill="black"/>
+                      <g transform="translate(15, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <circle cx="-3" cy="0" r="5" fill="black"/>
+                      </g>
+                      <g transform="translate(30, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <rect x="-5" y="-5" rx="5" ry="5" width="5" height="10" fill="black"/>
+                      </g>
+                      <g transform="translate(45, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <circle cx="-5" cy="0" r="5" fill="black"/>
+                      </g>
+                      <circle cx="60" cy="0" r="5" fill="#F5F5DC"/>
+                      <g transform="translate(75, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <circle cx="5" cy="0" r="5" fill="black"/>
+                      </g>
+                      <g transform="translate(90, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <rect x="0" y="-5" rx="5" ry="5" width="5" height="10" fill="black"/>
+                      </g>
+                      <g transform="translate(105, 0)">
+                        <circle cx="0" cy="0" r="5" fill="#F5F5DC"/>
+                        <circle cx="3" cy="0" r="5" fill="black"/>
+                      </g>
+                    </g>
                   <g id="trims">
                     <!-- Trim above second floor -->
-                    <path d="M140 30 L610 30 L600 40 L150 40 Z" fill="#654321" />
+                    <path d="M140 30 L610 30 L600 40 L150 40 Z" fill="Brown" />
                     <!-- Roof -->
-                    <path d="M150 30 L225 -30 L525 -30 L600 30 Z" fill="url(#scallop)" />
+                    <path d="M150 30 L225 -30 L525 -30 L600 30 Z" fill="url(#roof)" />
                   </g>
                   <!-- Upper Gable Trim -->
-                  <path d="M300 40 L375 -30 L450 40 Z" fill="#654321" />
+                  <path d="M300 40 L375 -30 L450 40 Z" fill="Brown" />
                   <!-- Upper Gable -->
                   <path d="M315 40 L375 -15 L435 40 Z" fill="url(#brick)" />
                   <!-- Door -->
-                  <g onclick="toggleExterior()" style="cursor: pointer;">
-                    <path id="door" d="M340 390 l0 -135 q30 -20 70 0 l0,135 z" fill="brown" stroke="black" stroke-width="0" />
+                  <g onclick="toggleExterior()">
+                    <path id="door" d="M340 390 l0 -135 q30 -20 70 0 l0,135 z" fill="MidnightBlue" />
                     <!-- Door knob -->
-                    <circle id="doorknob" cx="395" cy="330" r="5" fill="black"/>
+                    <circle id="doorknob" cx="395" cy="330" r="5" fill="Goldenrod"/>
                   </g>
                   <!-- Bush -->
-                  <rect id="lBush" width="85" height="90" x="75" y="300" rx="30" ry="30" fill="green" fill="url(#halftone)" />
-                  <rect id="rBush" width="85" height="90" x="590" y="300" rx="30" ry="30" fill="green" fill="url(#halftone)" />
+                  <rect id="lgrBush" width="85" height="90" x="75" y="310" rx="30" ry="30" fill="url(#leaf)" />
+                  <rect id="lmidBush" width="65" height="60" x="85" y="260" rx="20" ry="20" fill="url(#leaf)" />
+                  <rect id="ltopBush" width="45" height="50" x="95" y="220" rx="20" ry="20" fill="url(#leaf)" />
+                  <rect id="rgrBush" width="85" height="90" x="590" y="310" rx="30" ry="30" fill="url(#leaf)" />
+                  <rect id="rmidBush" width="65" height="60" x="600" y="260" rx="20" ry="20" fill="url(#leaf)" />
+                  <rect id="rtopBush" width="45" height="50" x="610" y="220" rx="20" ry="20" fill="url(#leaf)" />
                   <!-- Thief Disguised -->
                   <g id="thiefDisguised">
                     <!-- Body -->
-                    <rect x="375" y="350" width="30" height="50" fill="DarkSlateBlue"/>
+                    <rect x="375" y="350" width="30" height="50" fill="SteelBlue"/>
                     <!-- Head-->
                     <circle cx="390" cy="335" r="15" fill="PeachPuff"/>
                     <!-- Arms -->
-                    <line x1="375" y1="360" x2="365" y2="380" stroke="DarkSlateBlue" stroke-width="6"/>
-                    <line x1="405" y1="360" x2="415" y2="380" stroke="DarkSlateBlue" stroke-width="6"/>
+                    <line x1="375" y1="360" x2="365" y2="380" stroke="SteelBlue" stroke-width="6"/>
+                    <line x1="405" y1="360" x2="415" y2="380" stroke="SteelBlue" stroke-width="6"/>
                     <!-- Legs -->
-                    <line x1="380" y1="400" x2="375" y2="430" stroke="DarkSlateBlue" stroke-width="8"/>
-                    <line x1="400" y1="400" x2="405" y2="430" stroke="DarkSlateBlue" stroke-width="8"/>
+                    <line x1="380" y1="400" x2="375" y2="430" stroke="SteelBlue" stroke-width="8"/>
+                    <line x1="400" y1="400" x2="405" y2="430" stroke="SteelBlue" stroke-width="8"/>
                   </g>
+                  </svg>
                 </div>
               </div>
-              <script>
-  // Function to hide all story elements
-  function hideAllStoryElements() {
-    const elements = [
-    'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefDisguised', 'shoePrints',
-      'policeCar', 'knife'
-    ];
-    elements.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = "none";
-    });
-  }
-  hideAllStoryElements();
+              <script>// --- 1. CACHE ALL NECESSARY ELEMENTS ONCE ---
+const DOMElements = {
+    exterior: document.getElementById("exterior"),
+    door: document.getElementById("door"),
+    doorknob: document.getElementById("doorknob"),
+    freezerDoor: document.getElementById("freezerDoor"),
+    freezerShadow: document.getElementById("freezerShadow"),
 
-  function changeWindow(windowId) {
-    if (document.getElementById(windowId).getAttribute("fill") != "transparent") {
-      document.getElementById(windowId).setAttribute("fill", "transparent");
-    } else { document.getElementById(windowId).setAttribute("fill", "lightblue"); }
-  }
+    storyElements: [
+        'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefDisguised',
+        'sleepingWoman', 'shoePrints', 'policeCar', 'knife'
+    ].map(id => document.getElementById(id)).filter(el => el != null),
+};
 
-  let isUnlocked = true;
+let isMoon = false;
+let moonPhase = 0;
+let isUnlocked = true;
+let hasPermanentKey = false;
+const DOOR_OPEN_TRANSFORM = 'translate(-70, 72) skewY(-10)';
 
-  function toggleExterior() {
-      const exterior = document.getElementById("exterior");
-      const door = document.getElementById("door");
-      const doorknob = document.getElementById("doorknob");
+function usePermanentKey() {
+    if (!hasPermanentKey) {
+        hasPermanentKey = true;
+        updateDoorLockStatus(currentMoonPhase);
+    }
+}
 
-      // Define the complex door opening transformation string only once
-      const transformString =
-          `translate(-70, 72) ` +
-          `skewY(-10) `;
-
-      if (isUnlocked) {
-        if (exterior.style.display === "none") {
-            exterior.style.display = "block";
-            door.removeAttribute('transform');
-            doorknob.style.display = "block";
-        } else {
-            exterior.style.display = "none";
-            door.setAttribute('transform', transformString);
-            doorknob.style.display = "none";
-        }
-      } else {
-        exterior.style.display = "block";
-        door.removeAttribute('transform');
-        doorknob.style.display = "block";
-      }
-  }
-
-  freezerShadow.style.display = "block"
-    function toggleFreezer() {
-        const freezerDoor = document.getElementById("freezerDoor");
-        if (freezerDoor.getAttribute('width') < 80) {
-          freezerDoor.setAttribute('width', "80");
-        } else {
-          freezerDoor.setAttribute('width', "40");
-        }
-        const freezerShadow = document.getElementById("freezerShadow");
-        if (freezerShadow.style.display === "block") {
-          freezerShadow.style.display = "none";
-        } else {
-          freezerShadow.style.display = "block"
-        }
+function updateDoorLockStatus(phase) {
+    let previousLockStatus = isUnlocked;
+    if (hasPermanentKey) {
+        isUnlocked = true;
+    }
+    else if (phase > 0 && phase < 4) {
+    }
+    else {
+        isUnlocked = true;
     }
 
-fridgeShadow.style.display = "block"
+    console.log(`Door is now ${isUnlocked ? 'UNLOCKED' : 'LOCKED'} (Phase: ${phase}, Key: ${hasPermanentKey ? 'YES' : 'NO'})`);
+}
+
+function toggleExterior() {
+    if (!isUnlocked) {
+        // If locked, ensure it looks closed and do nothing else
+        closeDoor();
+        console.log("The door is locked! Check the moon phase.");
+        return;
+    }
+
+    // Toggle the display state if it's unlocked
+    if (DOMElements.exterior.style.display === "none") {
+        closeDoor();
+    } else {
+        openDoor();
+    }
+}
+
+function openDoor() {
+    DOMElements.exterior.style.display = "none";
+    DOMElements.door.setAttribute('transform', DOOR_OPEN_TRANSFORM);
+    DOMElements.doorknob.style.display = "none";
+}
+
+function closeDoor() {
+    DOMElements.exterior.style.display = "block";
+    DOMElements.door.removeAttribute('transform');
+    DOMElements.doorknob.style.display = "block";
+}
+
+function hideAllStoryElements() {
+    DOMElements.storyElements.forEach(el => {
+        el.style.display = "none";
+    });
+}
+
+function changeWindow(windowId) {
+    const windowEl = document.getElementById(windowId);
+    if (windowEl.getAttribute("fill") === "transparent") {
+        windowEl.setAttribute("fill", "lightblue");
+    } else {
+        windowEl.setAttribute("fill", "transparent");
+    }
+}
+
+function refresh(forceGet = false) {
+    window.location.reload(forceGet);
+}
+
+// Initial setup call (called once when the script loads)
+hideAllStoryElements();
+updateDoorLockStatus(moonPhase);
+
+  function toggleFreezer() {
+      const freezerDoor = document.getElementById("freezerDoor");
+      const freezerShadow = document.getElementById("freezerShadow");
+      if (freezerDoor.getAttribute('width') < 80) {
+        freezerDoor.setAttribute('width', "80");
+        freezerShadow.style.display = "none";
+      } else {
+        freezerDoor.setAttribute('width', "40");
+        freezerShadow.style.display = "block"
+      }
+    }
+
+fridgeShadow.style.display = "block";
   function toggleFridge() {
       const fridgeDoor = document.getElementById("fridgeDoor");
+      const fridgeShadow = document.getElementById("fridgeShadow");
       if (fridgeDoor.getAttribute('width') < 80) {
         fridgeDoor.setAttribute('width', "80");
-      } else {
-        fridgeDoor.setAttribute('width', "40");
-      }
-      const fridgeShadow = document.getElementById("fridgeShadow");
-      if (fridgeShadow.style.display === "block") {
         fridgeShadow.style.display = "none";
       } else {
+        fridgeDoor.setAttribute('width', "40");
         fridgeShadow.style.display = "block"
       }
-  }
+    }
+
+  function openDrawer() {
+      const dresserDrawer = document.getElementById("dresserDrawer");
+      if (dresserDrawer.getAttribute('class') === "closed") {
+        dresserDrawer.setAttribute('transform', `translate(0,5)`);
+        dresserDrawer.setAttribute('class', "open");
+        usePermanentKey();
+      } else {
+        dresserDrawer.setAttribute('transform', `translate(0,0)`);
+        dresserDrawer.setAttribute('class', "closed");
+      }
+    }
+
+  function newTop() {
+      const topsDrawer = document.getElementById("topsDrawer");
+      if (topsDrawer.getAttribute('class') === "closed") {
+        topsDrawer.setAttribute('transform', `translate(0,5)`);
+        topsDrawer.setAttribute('class', "open");
+      } else {
+        topsDrawer.setAttribute('transform', `translate(0,0)`);
+        topsDrawer.setAttribute('class', "closed");
+      }
+    }
+
+    function newBottom() {
+        const bottomsDrawer = document.getElementById("bottomsDrawer");
+        if (bottomsDrawer.getAttribute('class') === "closed") {
+          bottomsDrawer.setAttribute('transform', `translate(0,5)`);
+          bottomsDrawer.setAttribute('class', "open");
+        } else {
+          bottomsDrawer.setAttribute('transform', `translate(0,0)`);
+          bottomsDrawer.setAttribute('class', "closed");
+        }
+      }
 
   let tiaraBoxed = true;
-  jewelryBox.style.display = "block"
+  jewelryBox.style.display = "block";
     function toggleBox() {
         const jewelryBox = document.getElementById("jewelryBox");
         const jewelryBoxLid = document.getElementById("jewelryBoxLid");
@@ -514,10 +653,6 @@ fridgeShadow.style.display = "block"
         }
     }
 
-  // Moon phase toggle
-  let isMoon = false;
-  let moonPhase = 0;
-
   function toggleSunMoon() {
     const sun = document.getElementById("sun");
     const svgContainer = document.querySelector(".svg-container");
@@ -527,7 +662,7 @@ fridgeShadow.style.display = "block"
 
     if (!isMoon) {
       // Turn sun into moon (full moon)
-      sun.setAttribute("fill", "white");
+      sun.setAttribute("fill", "Gainsboro");
       svgContainer.classList.add("night-mode");
       isMoon = true;
       moonPhase = 0;
@@ -542,10 +677,22 @@ fridgeShadow.style.display = "block"
         svgContainer.classList.remove("night-mode");
         isMoon = false;
       } else {
-        sun.setAttribute("fill", "white");
+        sun.setAttribute("fill", "Gainsboro");
         svgContainer.classList.add("night-mode");
         applyMoonPhase(moonPhase);
       }
+    }
+  }
+
+  function toggleRaiseHand() {
+    if (rightHand.classList.contains("raised")) {
+      rightHand.setAttribute('transform', `translate(0,0)`);
+      rightArm.setAttribute("y2", "345");
+      rightArm.classList.replace('raised', 'lowered');
+    } else {
+      rightHand.setAttribute('transform', `translate(0,-40)`);
+      rightArm.setAttribute("y2", "305");
+      rightArm.classList.replace('lowered', 'raised');
     }
   }
 
@@ -553,6 +700,8 @@ fridgeShadow.style.display = "block"
       const sun = document.getElementById("sun");
       const svgNS = "http://www.w3.org/2000/svg";
       let svg = document.querySelector("svg");
+
+      updateDoorLockStatus(moonPhase);
 
       // Remove existing moon mask if present
       let existingMask = document.getElementById("moonMask");
@@ -570,11 +719,10 @@ fridgeShadow.style.display = "block"
       whiteCircle.setAttribute("cx", "950");
       whiteCircle.setAttribute("cy", "80");
       whiteCircle.setAttribute("r", "40");
-      whiteCircle.setAttribute("fill", "white");
+      whiteCircle.setAttribute("fill", "Gainsboro");
       mask.appendChild(whiteCircle);
 
       // Black shape for shadow
-      if (phase !== 4) { // Not new moon
         let shadow = document.createElementNS(svgNS, "ellipse");
         shadow.setAttribute("cy", "80");
         shadow.setAttribute("ry", "40");
@@ -585,83 +733,87 @@ fridgeShadow.style.display = "block"
         jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
 
         switch(phase) {
-          case 1: // Waning gibbous (mostly lit, small shadow on right)
-            isUnlocked = false;
-            shadow.setAttribute("cx", "970");
-            shadow.setAttribute("rx", "20");
-            oldWoman.style.display = "block";
-            oldWoman.setAttribute('transform', `translate(140,-10)`);
-            knife.style.display = "block";
-            if (exterior.style.display === "none") {
-              toggleExterior();
-            }
-            brokenWindowHole.setAttribute('opacity', "1.0");
-            break;
-          case 2: // Last quarter (half moon, right side dark)
-            isUnlocked = false;
-            shadow.setAttribute("cx", "970");
-            shadow.setAttribute("rx", "40");
-            brokenWindowHole.setAttribute('opacity', "1.0");
-            break;
-          case 3: // Waning crescent (thin crescent on left)
-            isUnlocked = false;
-            shadow.setAttribute("cx", "956");
-            shadow.setAttribute("rx", "35");
-            thiefInside.style.display = "block";
-            thiefInside.setAttribute('transform', `translate(-340,160)`);
-            toggleFridge();
-            brokenWindowHole.setAttribute('opacity', "1.0");
-            break;
-          case 4: // New moon (completely dark)
-            isUnlocked = true;
-            let blackCircle = document.createElementNS(svgNS, "circle");
-            blackCircle.setAttribute("cx", "950");
-            blackCircle.setAttribute("cy", "80");
-            blackCircle.setAttribute("r", "40");
-            blackCircle.setAttribute("fill", "black");
-            mask.appendChild(blackCircle);
-            thiefClimbing.style.display = "block";
-            thiefClimbing.setAttribute('transform', `translate(0,0)`);
-            toggleFridge();
-            brokenWindowHole.setAttribute('opacity', "1.0");
-            break;
-          case 5: // Waxing crescent (thin crescent on right)
-            isUnlocked = true;
-            shadow.setAttribute("cx", "944");
-            shadow.setAttribute("rx", "35");
-            thiefClimbing.style.display = "block";
-            thiefClimbing.setAttribute('transform', `translate(-450,170)`);
-            thiefEyes.style.display = "block";
-            brokenWindowHole.setAttribute('opacity', "0.0");
-            break;
-          case 6: // First quarter (half moon, left side dark)
-            isUnlocked = true;
-            tiaraBoxed = true;
-            thiefDisguised.style.display = "block";
-            oldWoman.style.display = "block";
-            oldWoman.setAttribute('transform', `translate(0,0)`);
-            shadow.setAttribute("cx", "930");
-            shadow.setAttribute("rx", "40");
-            brokenWindowHole.setAttribute('opacity', "0.0");
-            break;
-          case 7: // Waxing gibbous (mostly lit, small shadow on left)
-            isUnlocked = true;
-            shadow.setAttribute("cx", "930");
-            shadow.setAttribute("rx", "20");
-            oldWoman.style.display = "block";
-            oldWoman.setAttribute('transform', `translate(90,-185)`);
-            tiara.style.display = "block";
-            tiara.setAttribute('transform', `translate(125,-160)`);
-            rightHand.setAttribute('transform', `translate(0,-40)`);
-            rightArm.setAttribute("y2", "305");
-            jewelryBoxLid.setAttribute('height', "15");
-            jewelryBoxLid.setAttribute('transform', `translate(0,-10)`);
-            jewelryBoxClasp.setAttribute('transform', `translate(0,-15)`);
-            brokenWindowHole.setAttribute('opacity', "0.0");
-            break;
-        }
+                  case 0:
+                    let blackCircle = document.createElementNS(svgNS, "circle");
+                    blackCircle.setAttribute("cx", "950");
+                    blackCircle.setAttribute("cy", "80");
+                    blackCircle.setAttribute("r", "40");
+                    blackCircle.setAttribute("fill", "black");
+                    mask.appendChild(blackCircle);
+                    tiaraBoxed = true;
+                  case 1: // Waxing gibbous
+                    shadow.setAttribute("cx", "930");
+                    shadow.setAttribute("rx", "20");
+                    oldWoman.style.display = "block";
+                    oldWoman.setAttribute('transform', `translate(140,-10)`);
+                    knife.style.display = "block";
+                    if (exterior.style.display === "none") {
+                      toggleExterior();
+                    }
+                    brokenWindowHole.setAttribute('opacity', "1.0");
+                    windowBreak.setAttribute('opacity', "1.0");
+                    toggleRaiseHand();
+                    break;
+                  case 2: // First quarter
+                    shadow.setAttribute("cx", "930");
+                    shadow.setAttribute("rx", "35");
+                    brokenWindowHole.setAttribute('opacity', "1.0");
+                    windowBreak.setAttribute('opacity', "1.0");
+                    toggleRaiseHand();
+                    break;
+                  case 3: // Waxing crescent
+                    shadow.setAttribute("cx", "944");
+                    shadow.setAttribute("rx", "35");
+                    sleepingWoman.style.display = "block";
+                    thiefInside.style.display = "block";
+                    thiefInside.setAttribute('transform', `translate(-340,160)`);
+                    brokenWindowHole.setAttribute('opacity', "1.0");
+                    windowBreak.setAttribute('opacity', "1.0");
+                    toggleFridge();
+                    break;
+                  case 4: // New moon
+                    thiefClimbing.style.display = "block";
+                    thiefClimbing.setAttribute('transform', `translate(0,0)`);
+                    brokenWindowHole.setAttribute('opacity', "1.0");
+                    windowBreak.setAttribute('opacity', "1.0");
+                    toggleFridge();
+                    break;
+                  case 5: // Waning crescent
+                    shadow.setAttribute("cx", "956");
+                    shadow.setAttribute("rx", "35");
+                    sleepingWoman.style.display = "block";
+                    thiefClimbing.style.display = "block";
+                    thiefClimbing.setAttribute('transform', `translate(-470,170)`);
+                    thiefEyes.style.display = "block";
+                    brokenWindowHole.setAttribute('opacity', "0.0");
+                    windowBreak.setAttribute('opacity', "0.0");
+                    break;
+                  case 6: // Last quarter
+                    shadow.setAttribute("cx", "970");
+                    shadow.setAttribute("rx", "35");
+                    tiaraBoxed = true;
+                    thiefDisguised.style.display = "block";
+                    oldWoman.style.display = "block";
+                    oldWoman.setAttribute('transform', `translate(0,0)`);
+                    brokenWindowHole.setAttribute('opacity', "0.0");
+                    windowBreak.setAttribute('opacity', "0.0");
+                    toggleRaiseHand();
+                    break;
+                  case 7: // Waning gibbous
+                    shadow.setAttribute("cx", "970");
+                    shadow.setAttribute("rx", "20");
+                    oldWoman.style.display = "block";
+                    oldWoman.setAttribute('transform', `translate(90,-185)`);
+                    tiara.style.display = "block";
+                    tiara.setAttribute('transform', `translate(125,-160)`);
+                    brokenWindowHole.setAttribute('opacity', "0.0");
+                    windowBreak.setAttribute('opacity', "0.0");
+                    toggleRaiseHand();
+                    toggleBox();
+                    break;
+                }
         mask.appendChild(shadow);
-      }
+
 
       defs.appendChild(mask);
 
