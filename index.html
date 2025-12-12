@@ -31,37 +31,25 @@
         .svg-container.night-mode {
           background-color: #1a1a2e;
         }
-        #door {
-          transform-box: fill-box;
-          transform-origin: bottom left;
-          transition: transform 0.6s ease-in-out;
-        }
-        .door-open {
-          transform: skewY(10deg) scaleX(0.2);
-        }
         #doorknob {
-            /* 1. Default State: Visible */
             opacity: 1;
+            transition: none;
+            pointer-events: auto;
             visibility: visible;
-
-            /* 2. Transition for CLOSING (Applies when .door-open is removed) */
-            /* This rule sets the transition for when properties (opacity/visibility)
-               change *away* from the .door-open state.
-               - Duration: 0s (instant change)
-               - Delay: 4s (Wait 4 seconds before making it visible again)
-            */
-            transition: opacity 0s linear 4s, visibility 0s linear 4s;
         }
-
-        /* State when the door is OPEN */
-        .door-open #doorknob {
-            /* 3. Open State: Hidden */
+        #door-group.door-open #doorknob {
             opacity: 0;
             visibility: hidden;
-
-            /* 4. Transition for OPENING (Applies when .door-open is added) */
-            /* We want the doorknob to disappear IMMEDIATELY when opening (no delay) */
-            transition: opacity 0s linear 0s, visibility 0s linear 0s;
+            pointer-events: none;
+            transition: none;
+        }
+        #door-group {
+            transition: transform 0.3s ease-in-out;
+            transform-origin: 340px 390px;
+            transform: none;
+        }
+        #door-group.door-open {
+            transform: skewY(10deg) scaleX(0.2);
         }
   </style>
       </head>
@@ -523,10 +511,9 @@
                   <!-- Upper Gable -->
                   <path d="M315 40 L375 -15 L435 40 Z" fill="url(#brick)" />
                   <!-- Door -->
-                  <g onclick="toggleExterior()">
-                    <path id="door" d="M340 390 l0 -135 q30 -20 70 0 l0,135 z" fill="MidnightBlue" />
-                    <!-- Door knob -->
-                    <circle id="doorknob" cx="395" cy="330" r="5" fill="Goldenrod"/>
+                  <g id="door-group" onclick="toggleExterior()">
+                      <path id="door" d="M340 390 l0 -135 q30 -20 70 0 l0,135 z" fill="MidnightBlue" />
+                      <circle id="doorknob" cx="395" cy="330" r="5" fill="Goldenrod"/>
                   </g>
                   <!-- Bush -->
                   <rect id="lgrBush" width="85" height="90" x="75" y="310" rx="30" ry="30" fill="url(#leaf)" />
@@ -597,28 +584,39 @@
               }
 
               function toggleExterior() {
-                  const door = document.getElementById("door");
+                  const doorGroup = document.getElementById("door-group");
                   const exterior = document.getElementById("exterior");
                   const doorknob = document.getElementById("doorknob");
-                  // ^ doorknob element is still needed for scoping, but we won't manipulate its style directly
+
+                  const DELAY_MS = 100;
 
                   if (isUnlocked) {
                       if (isDoorOpen) {
                           exterior.style.display = "block";
-                          door.classList.remove("door-open");
+                          doorGroup.classList.remove("door-open");
+                          setTimeout(() => {
+                              doorknob.style.opacity = '1';
+                              doorknob.style.visibility = 'visible';
+                              doorknob.style.pointerEvents = 'auto';
+                          }, DELAY_MS);
                           isDoorOpen = false;
                       } else {
                           exterior.style.display = "none";
-                          door.classList.add("door-open");
+                          doorGroup.classList.add("door-open");
+                          doorknob.style.opacity = '0';
+                          doorknob.style.visibility = 'hidden';
+                          doorknob.style.pointerEvents = 'none';
                           isDoorOpen = true;
                       }
                   } else {
                       exterior.style.display = "block";
-                      if (door) door.classList.remove("door-open");
+                      doorGroup.classList.remove("door-open");
+                      doorknob.style.opacity = '1';
+                      doorknob.style.visibility = 'visible';
+                      doorknob.style.pointerEvents = 'auto';
                       isDoorOpen = false;
                   }
               }
-
               function hideAllStoryElements() {
                   DOMElements.storyElements.forEach(el => {
                       el.style.display = "none";
@@ -638,7 +636,6 @@
                   window.location.reload(forceGet);
               }
 
-              // Initial setup call (called once when the script loads)
               hideAllStoryElements();
               updateDoorLockStatus(moonPhase);
 
