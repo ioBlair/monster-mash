@@ -11,7 +11,7 @@
           width: 100%;
           height: 100%;
           overflow: hidden;
-          background-color: Sienna;
+          background-color: white;
         }
         .building-container {
           width: 100%;
@@ -30,6 +30,38 @@
 
         .svg-container.night-mode {
           background-color: #1a1a2e;
+        }
+        #door {
+          transform-box: fill-box;
+          transform-origin: bottom left;
+          transition: transform 0.6s ease-in-out;
+        }
+        .door-open {
+          transform: skewY(10deg) scaleX(0.2);
+        }
+        #doorknob {
+            /* 1. Default State: Visible */
+            opacity: 1;
+            visibility: visible;
+
+            /* 2. Transition for CLOSING (Applies when .door-open is removed) */
+            /* This rule sets the transition for when properties (opacity/visibility)
+               change *away* from the .door-open state.
+               - Duration: 0s (instant change)
+               - Delay: 4s (Wait 4 seconds before making it visible again)
+            */
+            transition: opacity 0s linear 4s, visibility 0s linear 4s;
+        }
+
+        /* State when the door is OPEN */
+        .door-open #doorknob {
+            /* 3. Open State: Hidden */
+            opacity: 0;
+            visibility: hidden;
+
+            /* 4. Transition for OPENING (Applies when .door-open is added) */
+            /* We want the doorknob to disappear IMMEDIATELY when opening (no delay) */
+            transition: opacity 0s linear 0s, visibility 0s linear 0s;
         }
   </style>
       </head>
@@ -521,399 +553,396 @@
                   </svg>
                 </div>
               </div>
-              <script>
-const DOMElements = {
-    exterior: document.getElementById("exterior"),
-    door: document.getElementById("door"),
-    doorknob: document.getElementById("doorknob"),
-    freezerDoor: document.getElementById("freezerDoor"),
-    freezerShadow: document.getElementById("freezerShadow"),
+                            <script>
+              const DOMElements = {
+                  exterior: document.getElementById("exterior"),
+                  door: document.getElementById("door"),
+                  doorknob: document.getElementById("doorknob"),
+                  freezerDoor: document.getElementById("freezerDoor"),
+                  freezerShadow: document.getElementById("freezerShadow"),
 
-    storyElements: [
-        'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefInsideHead', 'thiefDeadEyes', 'thiefDisguised',
-        'sleepingWoman', 'shoePrints', 'policeCar', 'knife', 'blood'
-    ].map(id => document.getElementById(id)).filter(el => el != null),
-};
+                  storyElements: [
+                      'oldWoman', 'tiara', 'thiefClimbing', 'thiefEyes', 'thiefInside', 'thiefInsideHead', 'thiefDeadEyes', 'thiefDisguised',
+                      'sleepingWoman', 'shoePrints', 'policeCar', 'knife', 'blood'
+                  ].map(id => document.getElementById(id)).filter(el => el != null),
+              };
 
-let isMoon = false;
-let moonPhase = 0;
-let isUnlocked = true;
-let hasPermanentKey = false;
-const DOOR_OPEN_TRANSFORM = 'translate(-70, 72) skewY(-10)';
-const doorKey = document.getElementById("doorKey");
-doorKey.style.display = "none";
+              let isMoon = false;
+              let moonPhase = 0;
+              let isUnlocked = true;
+              let isDoorOpen = false;
+              let hasPermanentKey = false;
+              const doorKey = document.getElementById("doorKey");
+              doorKey.style.display = "none";
 
-function usePermanentKey() {
-    if (!hasPermanentKey) {
-        hasPermanentKey = true;
-        doorKey.style.display = "block";
-        updateDoorLockStatus(currentMoonPhase);
-    }
-}
+              function usePermanentKey() {
+                  if (!hasPermanentKey) {
+                      hasPermanentKey = true;
+                      doorKey.style.display = "block";
+                      updateDoorLockStatus(moonPhase);
+                  }
+              }
 
-function updateDoorLockStatus(phase) {
-    let previousLockStatus = isUnlocked;
-    if (hasPermanentKey) {
-        isUnlocked = true;
-    }
-    else if (phase > 0 && phase < 4) {
-        isUnlocked = false;
-    }
-    else {
-        isUnlocked = true;
-    }
-}
+              function updateDoorLockStatus(phase) {
+                  if (hasPermanentKey) {
+                      isUnlocked = true;
+                  }
+                  // Lock for phases 1, 2, 3
+                  else if (phase > 0 && phase < 4) {
+                      isUnlocked = false;
+                  }
+                  else {
+                      isUnlocked = true;
+                  }
+              }
 
-function toggleExterior() {
-    if (!isUnlocked) {
-        // If locked, ensure it looks closed and do nothing else
-        closeDoor();
-        return;
-    }
+              function toggleExterior() {
+                  const door = document.getElementById("door");
+                  const exterior = document.getElementById("exterior");
+                  const doorknob = document.getElementById("doorknob");
+                  // ^ doorknob element is still needed for scoping, but we won't manipulate its style directly
 
-    // Toggle the display state if it's unlocked
-    if (DOMElements.exterior.style.display === "none") {
-        closeDoor();
-    } else {
-        openDoor();
-    }
-}
+                  if (isUnlocked) {
+                      if (isDoorOpen) {
+                          exterior.style.display = "block";
+                          door.classList.remove("door-open");
+                          isDoorOpen = false;
+                      } else {
+                          exterior.style.display = "none";
+                          door.classList.add("door-open");
+                          isDoorOpen = true;
+                      }
+                  } else {
+                      exterior.style.display = "block";
+                      if (door) door.classList.remove("door-open");
+                      isDoorOpen = false;
+                  }
+              }
 
-function openDoor() {
-    DOMElements.exterior.style.display = "none";
-    DOMElements.door.setAttribute('transform', DOOR_OPEN_TRANSFORM);
-    DOMElements.doorknob.style.display = "none";
-}
+              function hideAllStoryElements() {
+                  DOMElements.storyElements.forEach(el => {
+                      el.style.display = "none";
+                  });
+              }
 
-function closeDoor() {
-    DOMElements.exterior.style.display = "block";
-    DOMElements.door.removeAttribute('transform');
-    DOMElements.doorknob.style.display = "block";
-}
+              function changeWindow(windowId) {
+                  const windowEl = document.getElementById(windowId);
+                  if (windowEl.getAttribute("fill") === "transparent") {
+                      windowEl.setAttribute("fill", "lightblue");
+                  } else {
+                      windowEl.setAttribute("fill", "transparent");
+                  }
+              }
 
-function hideAllStoryElements() {
-    DOMElements.storyElements.forEach(el => {
-        el.style.display = "none";
-    });
-}
+              function refresh(forceGet = false) {
+                  window.location.reload(forceGet);
+              }
 
-function changeWindow(windowId) {
-    const windowEl = document.getElementById(windowId);
-    if (windowEl.getAttribute("fill") === "transparent") {
-        windowEl.setAttribute("fill", "lightblue");
-    } else {
-        windowEl.setAttribute("fill", "transparent");
-    }
-}
+              // Initial setup call (called once when the script loads)
+              hideAllStoryElements();
+              updateDoorLockStatus(moonPhase);
 
-function refresh(forceGet = false) {
-    window.location.reload(forceGet);
-}
+                function toggleFreezer() {
+                    const freezerDoor = document.getElementById("freezerDoor");
+                    const freezerShadow = document.getElementById("freezerShadow");
+                    if (freezerDoor.getAttribute('width') < 80) {
+                      freezerDoor.setAttribute('width', "80");
+                      freezerShadow.style.display = "none";
+                    } else {
+                      freezerDoor.setAttribute('width', "40");
+                      freezerShadow.style.display = "block"
+                    }
+                  }
 
-// Initial setup call (called once when the script loads)
-hideAllStoryElements();
-updateDoorLockStatus(moonPhase);
+              fridgeShadow.style.display = "block";
+                function toggleFridge() {
+                    const fridgeDoor = document.getElementById("fridgeDoor");
+                    const fridgeShadow = document.getElementById("fridgeShadow");
+                    if (fridgeDoor.getAttribute('width') < 80) {
+                      fridgeDoor.setAttribute('width', "80");
+                      fridgeShadow.style.display = "none";
+                    } else {
+                      fridgeDoor.setAttribute('width', "40");
+                      fridgeShadow.style.display = "block"
+                    }
+                  }
 
-  function toggleFreezer() {
-      const freezerDoor = document.getElementById("freezerDoor");
-      const freezerShadow = document.getElementById("freezerShadow");
-      if (freezerDoor.getAttribute('width') < 80) {
-        freezerDoor.setAttribute('width', "80");
-        freezerShadow.style.display = "none";
-      } else {
-        freezerDoor.setAttribute('width', "40");
-        freezerShadow.style.display = "block"
-      }
-    }
+                function openDrawer() {
+                    const nightstandDrawer = document.getElementById("nightstandDrawer");
+                    if (nightstandDrawer.getAttribute('class') === "closed") {
+                      nightstandDrawer.setAttribute('transform', `translate(0,5)`);
+                      nightstandDrawer.setAttribute('class', "open");
+                      usePermanentKey();
+                    } else {
+                      nightstandDrawer.setAttribute('transform', `translate(0,0)`);
+                      nightstandDrawer.setAttribute('class', "closed");
+                    }
+                  }
 
-fridgeShadow.style.display = "block";
-  function toggleFridge() {
-      const fridgeDoor = document.getElementById("fridgeDoor");
-      const fridgeShadow = document.getElementById("fridgeShadow");
-      if (fridgeDoor.getAttribute('width') < 80) {
-        fridgeDoor.setAttribute('width', "80");
-        fridgeShadow.style.display = "none";
-      } else {
-        fridgeDoor.setAttribute('width', "40");
-        fridgeShadow.style.display = "block"
-      }
-    }
+                function newTop() {
+                    const topsDrawer = document.getElementById("topsDrawer");
+                    if (topsDrawer.getAttribute('class') === "closed") {
+                      topsDrawer.setAttribute('transform', `translate(0,5)`);
+                      topsDrawer.setAttribute('class', "open");
+                    } else {
+                      topsDrawer.setAttribute('transform', `translate(0,0)`);
+                      topsDrawer.setAttribute('class', "closed");
+                    }
+                  }
 
-  function openDrawer() {
-      const nightstandDrawer = document.getElementById("nightstandDrawer");
-      if (nightstandDrawer.getAttribute('class') === "closed") {
-        nightstandDrawer.setAttribute('transform', `translate(0,5)`);
-        nightstandDrawer.setAttribute('class', "open");
-        usePermanentKey();
-      } else {
-        nightstandDrawer.setAttribute('transform', `translate(0,0)`);
-        nightstandDrawer.setAttribute('class', "closed");
-      }
-    }
+                  const colorPalettes = [
+                      { name: "Ocean Teal", hex: "#008080" },
+                      { name: "Deep Coral", hex: "#FF7F50" },
+                      { name: "Royal Purple", hex: "#7851A9" },
+                      { name: "Forest Green", hex: "#228B22" },
+                      { name: "Sunny Yellow", hex: "#FFD700" },
+                      { name: "Charcoal Gray", hex: "#36454F" },
+                      { name: "Cerise Pink", hex: "#DE3163" }
+                  ];
+                  let currentColorIndex = 0;
 
-  function newTop() {
-      const topsDrawer = document.getElementById("topsDrawer");
-      if (topsDrawer.getAttribute('class') === "closed") {
-        topsDrawer.setAttribute('transform', `translate(0,5)`);
-        topsDrawer.setAttribute('class', "open");
-      } else {
-        topsDrawer.setAttribute('transform', `translate(0,0)`);
-        topsDrawer.setAttribute('class', "closed");
-      }
-    }
+                  function newBottom() {
+                      const bottomsDrawer = document.getElementById("bottomsDrawer");
+                      if (bottomsDrawer.getAttribute('class') === "closed") {
+                        bottomsDrawer.setAttribute('transform', `translate(0,5)`);
+                        bottomsDrawer.setAttribute('class', "open");
+                        updatePantsColor();
+                      } else {
+                        bottomsDrawer.setAttribute('transform', `translate(0,0)`);
+                        bottomsDrawer.setAttribute('class', "closed");
+                      }
+                    }
 
-    const colorPalettes = [
-        { name: "Ocean Teal", hex: "#008080" },
-        { name: "Deep Coral", hex: "#FF7F50" },
-        { name: "Royal Purple", hex: "#7851A9" },
-        { name: "Forest Green", hex: "#228B22" },
-        { name: "Sunny Yellow", hex: "#FFD700" },
-        { name: "Charcoal Gray", hex: "#36454F" },
-        { name: "Cerise Pink", hex: "#DE3163" }
-    ];
-    let currentColorIndex = 0;
+                    function updatePantsColor() {
+                        const color = colorPalettes[currentColorIndex];
 
-    function newBottom() {
-        const bottomsDrawer = document.getElementById("bottomsDrawer");
-        if (bottomsDrawer.getAttribute('class') === "closed") {
-          bottomsDrawer.setAttribute('transform', `translate(0,5)`);
-          bottomsDrawer.setAttribute('class', "open");
-          updatePantsColor();
-        } else {
-          bottomsDrawer.setAttribute('transform', `translate(0,0)`);
-          bottomsDrawer.setAttribute('class', "closed");
-        }
-      }
+                        if (!color) {
+                            currentColorIndex = 0;
+                            return;
+                        }
+                        const pantsGroup = document.getElementById('womanPants');
+                        if (!pantsGroup) {
+                        } else {
+                            const elementsToStyle = pantsGroup.querySelectorAll('path, circle, rect, polygon, line, polyline, ellipse');
 
-      function updatePantsColor() {
-          const color = colorPalettes[currentColorIndex];
+                            elementsToStyle.forEach(element => {
+                                element.style.fill = color.hex;
+                                element.style.stroke = color.hex;
+                            });
+                        }
+                        currentColorIndex = (currentColorIndex + 1) % colorPalettes.length;
+                    }
 
-          if (!color) {
-              currentColorIndex = 0;
-              return;
-          }
-          const pantsGroup = document.getElementById('womanPants');
-          if (!pantsGroup) {
-          } else {
-              const elementsToStyle = pantsGroup.querySelectorAll('path, circle, rect, polygon, line, polyline, ellipse');
+                let tiaraBoxed = true;
+                jewelryBox.style.display = "block";
+                  function toggleBox() {
+                      const jewelryBox = document.getElementById("jewelryBox");
+                      const jewelryBoxLid = document.getElementById("jewelryBoxLid");
+                      const jewelryBoxClasp = document.getElementById("jewelryBoxClasp");
+                      if (jewelryBoxLid.getAttribute('height') > 5) {
+                        jewelryBoxLid.setAttribute('height', "5");
+                        jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
+                        jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
+                        if (tiaraBoxed) {
+                          tiara.style.display = "none";
+                        }
+                      } else {
+                        jewelryBoxLid.setAttribute('height', "15");
+                        jewelryBoxLid.setAttribute('transform', `translate(0,-10)`);
+                        jewelryBoxClasp.setAttribute('transform', `translate(0,-15)`);
+                        if (tiaraBoxed) {
+                          tiara.style.display = "block";
+                          tiara.setAttribute('transform', `translate(137,-161)`);
+                        }
+                      }
+                  }
 
-              elementsToStyle.forEach(element => {
-                  element.style.fill = color.hex;
-                  element.style.stroke = color.hex;
-              });
-          }
-          currentColorIndex = (currentColorIndex + 1) % colorPalettes.length;
-      }
+                function toggleSunMoon() {
+                  const sun = document.getElementById("sun");
+                  const svgContainer = document.querySelector(".svg-container");
+                  const svgNS = "http://www.w3.org/2000/svg";
 
-  let tiaraBoxed = true;
-  jewelryBox.style.display = "block";
-    function toggleBox() {
-        const jewelryBox = document.getElementById("jewelryBox");
-        const jewelryBoxLid = document.getElementById("jewelryBoxLid");
-        const jewelryBoxClasp = document.getElementById("jewelryBoxClasp");
-        if (jewelryBoxLid.getAttribute('height') > 5) {
-          jewelryBoxLid.setAttribute('height', "5");
-          jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
-          jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
-          if (tiaraBoxed) {
-            tiara.style.display = "none";
-          }
-        } else {
-          jewelryBoxLid.setAttribute('height', "15");
-          jewelryBoxLid.setAttribute('transform', `translate(0,-10)`);
-          jewelryBoxClasp.setAttribute('transform', `translate(0,-15)`);
-          if (tiaraBoxed) {
-            tiara.style.display = "block";
-            tiara.setAttribute('transform', `translate(137,-161)`);
-          }
-        }
-    }
+                  hideAllStoryElements();
 
-  function toggleSunMoon() {
-    const sun = document.getElementById("sun");
-    const svgContainer = document.querySelector(".svg-container");
-    const svgNS = "http://www.w3.org/2000/svg";
+                  if (!isMoon) {
+                    // Turn sun into moon (full moon)
+                    sun.setAttribute("fill", "Gainsboro");
+                    svgContainer.classList.add("night-mode");
+                    isMoon = true;
+                    moonPhase = 0;
+                  } else {
+                    moonPhase = (moonPhase + 1) % 8;
 
-    hideAllStoryElements();
+                    if (moonPhase === 0) {
+                      // Reset back to sun
+                      sun.setAttribute("fill", "yellow");
+                      sun.setAttribute("fill-opacity", "1");
+                      sun.removeAttribute("mask");
+                      svgContainer.classList.remove("night-mode");
+                      isMoon = false;
+                    } else {
+                      sun.setAttribute("fill", "Gainsboro");
+                      svgContainer.classList.add("night-mode");
+                      applyMoonPhase(moonPhase);
+                    }
+                  }
+                }
 
-    if (!isMoon) {
-      // Turn sun into moon (full moon)
-      sun.setAttribute("fill", "Gainsboro");
-      svgContainer.classList.add("night-mode");
-      isMoon = true;
-      moonPhase = 0;
-    } else {
-      moonPhase = (moonPhase + 1) % 8;
+                function toggleRaiseHand() {
+                  if (rightHand.classList.contains("raised")) {
+                    rightHand.setAttribute('transform', `translate(0,0)`);
+                    rightArm.setAttribute("y2", "345");
+                    rightArm.classList.replace('raised', 'lowered');
+                  } else {
+                    rightHand.setAttribute('transform', `translate(0,-40)`);
+                    rightArm.setAttribute("y2", "305");
+                    rightArm.classList.replace('lowered', 'raised');
+                  }
+                }
 
-      if (moonPhase === 0) {
-        // Reset back to sun
-        sun.setAttribute("fill", "yellow");
-        sun.setAttribute("fill-opacity", "1");
-        sun.removeAttribute("mask");
-        svgContainer.classList.remove("night-mode");
-        isMoon = false;
-      } else {
-        sun.setAttribute("fill", "Gainsboro");
-        svgContainer.classList.add("night-mode");
-        applyMoonPhase(moonPhase);
-      }
-    }
-  }
+                  function applyMoonPhase(phase) {
+                    const sun = document.getElementById("sun");
+                    const svgNS = "http://www.w3.org/2000/svg";
+                    let svg = document.querySelector("svg");
 
-  function toggleRaiseHand() {
-    if (rightHand.classList.contains("raised")) {
-      rightHand.setAttribute('transform', `translate(0,0)`);
-      rightArm.setAttribute("y2", "345");
-      rightArm.classList.replace('raised', 'lowered');
-    } else {
-      rightHand.setAttribute('transform', `translate(0,-40)`);
-      rightArm.setAttribute("y2", "305");
-      rightArm.classList.replace('lowered', 'raised');
-    }
-  }
+                    updateDoorLockStatus(moonPhase);
 
-    function applyMoonPhase(phase) {
-      const sun = document.getElementById("sun");
-      const svgNS = "http://www.w3.org/2000/svg";
-      let svg = document.querySelector("svg");
+                    // Remove existing moon mask if present
+                    let existingMask = document.getElementById("moonMask");
+                    if (existingMask) {
+                      existingMask.remove();
+                    }
 
-      updateDoorLockStatus(moonPhase);
+                    // Create new mask for moon phase
+                    let defs = svg.querySelector("defs") || svg.insertBefore(document.createElementNS(svgNS, "defs"), svg.firstChild);
+                    let mask = document.createElementNS(svgNS, "mask");
+                    mask.setAttribute("id", "moonMask");
 
-      // Remove existing moon mask if present
-      let existingMask = document.getElementById("moonMask");
-      if (existingMask) {
-        existingMask.remove();
-      }
+                    // White circle (visible part of moon)
+                    let whiteCircle = document.createElementNS(svgNS, "circle");
+                    whiteCircle.setAttribute("cx", "950");
+                    whiteCircle.setAttribute("cy", "80");
+                    whiteCircle.setAttribute("r", "40");
+                    whiteCircle.setAttribute("fill", "Gainsboro");
+                    mask.appendChild(whiteCircle);
 
-      // Create new mask for moon phase
-      let defs = svg.querySelector("defs") || svg.insertBefore(document.createElementNS(svgNS, "defs"), svg.firstChild);
-      let mask = document.createElementNS(svgNS, "mask");
-      mask.setAttribute("id", "moonMask");
+                    // Black shape for shadow
+                      let shadow = document.createElementNS(svgNS, "ellipse");
+                      shadow.setAttribute("cy", "80");
+                      shadow.setAttribute("ry", "40");
+                      shadow.setAttribute("fill", "black");
 
-      // White circle (visible part of moon)
-      let whiteCircle = document.createElementNS(svgNS, "circle");
-      whiteCircle.setAttribute("cx", "950");
-      whiteCircle.setAttribute("cy", "80");
-      whiteCircle.setAttribute("r", "40");
-      whiteCircle.setAttribute("fill", "Gainsboro");
-      mask.appendChild(whiteCircle);
+                      jewelryBoxLid.setAttribute('height', "5");
+                      jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
+                      jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
 
-      // Black shape for shadow
-        let shadow = document.createElementNS(svgNS, "ellipse");
-        shadow.setAttribute("cy", "80");
-        shadow.setAttribute("ry", "40");
-        shadow.setAttribute("fill", "black");
-
-        jewelryBoxLid.setAttribute('height', "5");
-        jewelryBoxLid.setAttribute('transform', `translate(0,0)`);
-        jewelryBoxClasp.setAttribute('transform', `translate(0,0)`);
-
-        switch(phase) {
-                  case 0:
-                    let blackCircle = document.createElementNS(svgNS, "circle");
-                    blackCircle.setAttribute("cx", "950");
-                    blackCircle.setAttribute("cy", "80");
-                    blackCircle.setAttribute("r", "40");
-                    blackCircle.setAttribute("fill", "black");
-                    mask.appendChild(blackCircle);
-                    tiaraBoxed = true;
-                  case 1: // Waxing gibbous
-                    shadow.setAttribute("cx", "930");
-                    shadow.setAttribute("rx", "20");
-                    oldWoman.style.display = "block";
-                    oldWoman.setAttribute('transform', `translate(140,-10)`);
-                    knife.style.display = "block";
-                    if (!hasPermanentKey && exterior.style.display === "none") {
-                      toggleExterior();
-                    }
-                    thiefInsideHead.style.display = "block";
-                    thiefInsideHead.setAttribute('transform', `translate(5,190)`);
-                    thiefDeadEyes.style.display = "block";
-                    blood.style.display = "block";
-                    brokenWindowHole.setAttribute('opacity', "1.0");
-                    windowBreak.setAttribute('opacity', "1.0");
-                    toggleRaiseHand();
-                    break;
-                  case 2: // First quarter
-                    shadow.setAttribute("cx", "930");
-                    shadow.setAttribute("rx", "35");
-                    brokenWindowHole.setAttribute('opacity', "1.0");
-                    windowBreak.setAttribute('opacity', "1.0");
-                    toggleRaiseHand();
-                    break;
-                  case 3: // Waxing crescent
-                    shadow.setAttribute("cx", "944");
-                    shadow.setAttribute("rx", "35");
-                    sleepingWoman.style.display = "block";
-                    thiefInside.style.display = "block";
-                    thiefInside.setAttribute('transform', `translate(-340,160)`);
-                    thiefInsideHead.style.display = "block";
-                    thiefInsideHead.setAttribute('transform', `translate(-340,160)`);
-                    brokenWindowHole.setAttribute('opacity', "1.0");
-                    windowBreak.setAttribute('opacity', "1.0");
-                    toggleFridge();
-                    break;
-                  case 4: // New moon
-                    thiefClimbing.style.display = "block";
-                    thiefClimbing.setAttribute('transform', `translate(0,0)`);
-                    brokenWindowHole.setAttribute('opacity', "1.0");
-                    windowBreak.setAttribute('opacity', "1.0");
-                    toggleFridge();
-                    break;
-                  case 5: // Waning crescent
-                    shadow.setAttribute("cx", "956");
-                    shadow.setAttribute("rx", "35");
-                    sleepingWoman.style.display = "block";
-                    thiefClimbing.style.display = "block";
-                    thiefClimbing.setAttribute('transform', `translate(-470,170)`);
-                    thiefEyes.style.display = "block";
-                    brokenWindowHole.setAttribute('opacity', "0.0");
-                    windowBreak.setAttribute('opacity', "0.0");
-                    break;
-                  case 6: // Last quarter
-                    shadow.setAttribute("cx", "970");
-                    shadow.setAttribute("rx", "35");
-                    tiaraBoxed = true;
-                    thiefDisguised.style.display = "block";
-                    oldWoman.style.display = "block";
-                    oldWoman.setAttribute('transform', `translate(0,0)`);
-                    brokenWindowHole.setAttribute('opacity', "0.0");
-                    windowBreak.setAttribute('opacity', "0.0");
-                    toggleRaiseHand();
-                    break;
-                  case 7: // Waning gibbous
-                    shadow.setAttribute("cx", "970");
-                    shadow.setAttribute("rx", "20");
-                    oldWoman.style.display = "block";
-                    oldWoman.setAttribute('transform', `translate(90,-185)`);
-                    tiara.style.display = "block";
-                    tiara.setAttribute('transform', `translate(125,-160)`);
-                    brokenWindowHole.setAttribute('opacity', "0.0");
-                    windowBreak.setAttribute('opacity', "0.0");
-                    toggleRaiseHand();
-                    toggleBox();
-                    break;
-                }
-        mask.appendChild(shadow);
+                      switch(phase) {
+                                case 0:
+                                  let blackCircle = document.createElementNS(svgNS, "circle");
+                                  blackCircle.setAttribute("cx", "950");
+                                  blackCircle.setAttribute("cy", "80");
+                                  blackCircle.setAttribute("r", "40");
+                                  blackCircle.setAttribute("fill", "black");
+                                  mask.appendChild(blackCircle);
+                                  tiaraBoxed = true;
+                                  break;
+                                case 1: // Waxing gibbous
+                                  shadow.setAttribute("cx", "930");
+                                  shadow.setAttribute("rx", "20");
+                                  oldWoman.style.display = "block";
+                                  oldWoman.setAttribute('transform', `translate(140,-10)`);
+                                  knife.style.display = "block";
+                                  if (!hasPermanentKey && exterior.style.display === "none") {
+                                    toggleExterior();
+                                  }
+                                  thiefInsideHead.style.display = "block";
+                                  thiefInsideHead.setAttribute('transform', `translate(5,190)`);
+                                  thiefDeadEyes.style.display = "block";
+                                  blood.style.display = "block";
+                                  brokenWindowHole.setAttribute('opacity', "1.0");
+                                  windowBreak.setAttribute('opacity', "1.0");
+                                  toggleRaiseHand();
+                                  break;
+                                case 2: // First quarter
+                                  shadow.setAttribute("cx", "930");
+                                  shadow.setAttribute("rx", "35");
+                                  brokenWindowHole.setAttribute('opacity', "1.0");
+                                  windowBreak.setAttribute('opacity', "1.0");
+                                  toggleRaiseHand();
+                                  break;
+                                case 3: // Waxing crescent
+                                  shadow.setAttribute("cx", "944");
+                                  shadow.setAttribute("rx", "35");
+                                  sleepingWoman.style.display = "block";
+                                  thiefInside.style.display = "block";
+                                  thiefInside.setAttribute('transform', `translate(-340,160)`);
+                                  thiefInsideHead.style.display = "block";
+                                  thiefInsideHead.setAttribute('transform', `translate(-340,160)`);
+                                  brokenWindowHole.setAttribute('opacity', "1.0");
+                                  windowBreak.setAttribute('opacity', "1.0");
+                                  toggleFridge();
+                                  break;
+                                case 4: // New moon
+                                  thiefClimbing.style.display = "block";
+                                  thiefClimbing.setAttribute('transform', `translate(0,0)`);
+                                  brokenWindowHole.setAttribute('opacity', "1.0");
+                                  windowBreak.setAttribute('opacity', "1.0");
+                                  toggleFridge();
+                                  break;
+                                case 5: // Waning crescent
+                                  shadow.setAttribute("cx", "956");
+                                  shadow.setAttribute("rx", "35");
+                                  sleepingWoman.style.display = "block";
+                                  thiefClimbing.style.display = "block";
+                                  thiefClimbing.setAttribute('transform', `translate(-470,170)`);
+                                  thiefEyes.style.display = "block";
+                                  brokenWindowHole.setAttribute('opacity', "0.0");
+                                  windowBreak.setAttribute('opacity', "0.0");
+                                  break;
+                                case 6: // Last quarter
+                                  shadow.setAttribute("cx", "970");
+                                  shadow.setAttribute("rx", "35");
+                                  tiaraBoxed = true;
+                                  thiefDisguised.style.display = "block";
+                                  oldWoman.style.display = "block";
+                                  oldWoman.setAttribute('transform', `translate(0,0)`);
+                                  brokenWindowHole.setAttribute('opacity', "0.0");
+                                  windowBreak.setAttribute('opacity', "0.0");
+                                  toggleRaiseHand();
+                                  break;
+                                case 7: // Waning gibbous
+                                  shadow.setAttribute("cx", "970");
+                                  shadow.setAttribute("rx", "20");
+                                  oldWoman.style.display = "block";
+                                  oldWoman.setAttribute('transform', `translate(90,-185)`);
+                                  tiara.style.display = "block";
+                                  tiara.setAttribute('transform', `translate(125,-160)`);
+                                  brokenWindowHole.setAttribute('opacity', "0.0");
+                                  windowBreak.setAttribute('opacity', "0.0");
+                                  toggleRaiseHand();
+                                  toggleBox();
+                                  break;
+                              }
+                      mask.appendChild(shadow);
 
 
-      defs.appendChild(mask);
+                    defs.appendChild(mask);
 
-      // Apply mask to sun
-      sun.setAttribute("mask", "url(#moonMask)");
+                    // Apply mask to sun
+                    sun.setAttribute("mask", "url(#moonMask)");
 
-      // For new moon, make it semi-transparent but still clickable
-      if (phase === 4) {
-        sun.setAttribute("fill-opacity", "0.2");
-        sun.setAttribute("stroke", "white");
-        sun.setAttribute("stroke-width", "1");
-      } else {
-        sun.setAttribute("fill-opacity", "1");
-        sun.removeAttribute("stroke");
-        sun.removeAttribute("stroke-width");
-      }
-    }
+                    // For new moon, make it semi-transparent but still clickable
+                    if (phase === 4) {
+                      sun.setAttribute("fill-opacity", "0.2");
+                      sun.setAttribute("stroke", "white");
+                      sun.setAttribute("stroke-width", "1");
+                    } else {
+                      sun.setAttribute("fill-opacity", "1");
+                      sun.removeAttribute("stroke");
+                      sun.removeAttribute("stroke-width");
+                    }
+                  }
 
-              </script>
+                            </script>
             </body>
           </html>
