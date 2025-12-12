@@ -397,9 +397,9 @@
                     <line id="rightArm" x1="390" y1="315" x2="405" y2="345" stroke="#8B6F47" stroke-width="8"/>
                     <!-- Legs -->
                     <g id="womanPants">
-                      <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-bottom)" fill="darkblue"/>
-                      <line x1="368" y1="355" x2="368" y2="385" stroke="darkblue" stroke-width="10"/>
-                      <line x1="382" y1="355" x2="382" y2="385" stroke="darkblue" stroke-width="10"/>
+                      <ellipse cx="375" cy="335" rx="20" ry="30" mask="url(#old-woman-bottom)" fill="Navy"/>
+                      <line x1="368" y1="355" x2="368" y2="385" stroke="Navy" stroke-width="10"/>
+                      <line x1="382" y1="355" x2="382" y2="385" stroke="Navy" stroke-width="10"/>
                     </g>
                     <!-- Feet -->
                     <ellipse cx="365" cy="385" rx="8" ry="4" fill="black"/>
@@ -687,15 +687,15 @@
                     }
                   }
 
-                  const colorPalettes = [
-                      { name: "Ocean Teal", hex: "#008080" },
-                      { name: "Deep Coral", hex: "#FF7F50" },
-                      { name: "Royal Purple", hex: "#7851A9" },
-                      { name: "Forest Green", hex: "#228B22" },
-                      { name: "Sunny Yellow", hex: "#FFD700" },
-                      { name: "Charcoal Gray", hex: "#36454F" },
-                      { name: "Cerise Pink", hex: "#DE3163" }
-                  ];
+                const colorPalettes = [
+                    "Olive",
+                    "CornflowerBlue",
+                    "DarkCyan",
+                    "Indigo",
+                    "PaleVioletRed",
+                    "Navy",
+                    "Tomato"
+                ];
                   let currentColorIndex = 0;
 
                   function newBottom() {
@@ -723,8 +723,8 @@
                             const elementsToStyle = pantsGroup.querySelectorAll('path, circle, rect, polygon, line, polyline, ellipse');
 
                             elementsToStyle.forEach(element => {
-                                element.style.fill = color.hex;
-                                element.style.stroke = color.hex;
+                                element.style.fill = color;
+                                element.style.stroke = color;
                             });
                         }
                         currentColorIndex = (currentColorIndex + 1) % colorPalettes.length;
@@ -863,6 +863,11 @@
                                 case 2: // First quarter
                                   shadow.setAttribute("cx", "930");
                                   shadow.setAttribute("rx", "35");
+                                  sleepingWoman.style.display = "block";
+                                  thiefInside.style.display = "block";
+                                  thiefInside.setAttribute('transform', `translate(-150,110)`);
+                                  thiefInsideHead.style.display = "block";
+                                  thiefInsideHead.setAttribute('transform', `translate(-150,110)`);
                                   brokenWindowHole.setAttribute('opacity', "1.0");
                                   windowBreak.setAttribute('opacity', "1.0");
                                   toggleRaiseHand();
