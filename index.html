@@ -82,6 +82,24 @@
                   <ellipse cx="16" cy="10" rx="1" ry="2" transform="rotate(-10)" fill="ForestGreen" />
                   <ellipse cx="15" cy="12" rx="1" ry="2" transform="rotate(10)" fill="ForestGreen" />
                 </pattern>
+                <!-- Wallpaper pattern -->
+                <pattern id="wallpaper" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <rect x="0" y="0" width="20" height="20" fill="FloralWhite" />
+                  <path d="M 5 12 C 3 9 3 13 1 8 C 3 10 4 8 5 11 Z M 5 11 C 6 8 7 10 9 8 C 7 13 7 9 5 12 Z M 3 4 L 3 6 A 1 1 0 0 0 7 6 L 7 4 L 6 5 L 5 4 L 4 5 Z" fill="chocolate" />
+                  <circle r=".6" cx="5" cy="18" fill="chocolate" />
+                  <rect x="14" y="0" width="3" height="20" fill="LightBlue" />
+                </pattern>
+                <!-- Floor pattern -->
+                <pattern id="floor" x="0" y="0" width="50" height="20" patternUnits="userSpaceOnUse">
+                    <rect width="50" height="10" x="-25" y="0" fill="BurlyWood" stroke="Wheat" transform="skewX(-30)" stroke-width="2"/>
+                    <rect width="50" height="10" x="25" y="0" fill="BurlyWood" stroke="Wheat" transform="skewX(-30)" stroke-width="2"/>
+                    <rect width="50" height="10" x="50" y="10" fill="BurlyWood" stroke="Wheat" transform="skewX(-30)" stroke-width="2"/>
+                    <rect width="50" height="10" x="0" y="10" fill="BurlyWood" stroke="Wheat" transform="skewX(-30)" stroke-width="2"/>
+                </pattern>
+                <!-- Lounge chair pattern -->
+                <pattern id="chair" x="0" y="0" width=".64" height="1.0" patternUnits="objectBoundingBox" patternContentUnits="userSpaceOnUse">
+                  <path d="M 0 0 L 0 19 Q 4 18 8 19 Q 12 20 16 19 Q 20 18 24 19 Q 28 20 32 19 L 32 0 Z" fill="Tan" />
+                </pattern>
 
                 <!--Masks for characters-->
                 <mask id="old-woman-top">
@@ -183,58 +201,53 @@
                 <!-- Interior Floors -->
                 <g id="interior">
                   <!-- First Floor Interior Sections -->
-                  <rect width="450" height="170" x="150" y="220" fill="#D2B48C" />
+                  <rect width="450" height="170" x="150" y="220" fill="url(#wallpaper)" />
                   <!-- Second Floor Interior Sections -->
-                  <rect width="450" height="170" x="150" y="40" fill="#D2B48C" />
+                  <rect width="450" height="170" x="150" y="40" fill="url(#wallpaper)" />
                 </g>
                 <!-- First Floor Floor -->
-                <rect x="150" y="370" width="450" height="20" fill="brown" />
+                <rect x="150" y="370" width="450" height="20" fill="url(#floor)" />
                 <!-- Second Floor Floors -->
-                <rect x="150" y="200" width="450" height="20" fill="brown" />
+                <rect x="150" y="200" width="450" height="20" fill="url(#floor)" />
                 <!-- Grand Central Staircase (First Floor Interior) - Adjusted to First Floor Height -->
                 <g id="central-staircase">
                   <!-- Staircase base structure (tapers from 150px wide at bottom to 70px at top) -->
                   <polygon points="300,390 450,390 410,220 340,220" fill="#8B7355" />
-                  <rect x="300" y="370" width="150" height="20" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="300,370 450,370 443,350 307,350" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <rect x="307" y="334" width="136" height="16" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="307,334 443,334 437,318 313,318" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <rect x="313" y="303" width="124" height="15" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="313,303 437,303 432,288 318,288" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <rect x="318" y="274" width="114" height="14" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="318,274 432,274 427,260 323,260" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <rect x="323" y="247" width="104" height="13" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="323,247 427,247 423,234 327,234" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <rect x="327" y="222" width="96" height="12" fill="#654321" stroke="#4A3218" stroke-width="0" />
-                  <polygon points="327,222 423,222 420,211 330,211" fill="#765432" stroke="#4A3218" stroke-width="0" />
-                  <!-- Railings (tapered to match stairs) -->
-                  <!-- <line x1="300" y1="390" x2="340" y2="220" stroke="#4A3218" stroke-width="3" /> -->
-                  <!-- <line x1="450" y1="390" x2="410" y2="220" stroke="#4A3218" stroke-width="3" /> -->
+                  <rect x="300" y="370" width="150" height="20" fill="BurlyWood" />
+                  <polygon points="300,370 450,370 443,350 307,350" fill="Wheat" />
+                  <rect x="307" y="334" width="136" height="16" fill="BurlyWood" />
+                  <polygon points="307,334 443,334 437,318 313,318" fill="Wheat" />
+                  <rect x="313" y="303" width="124" height="15" fill="BurlyWood" />
+                  <polygon points="313,303 437,303 432,288 318,288" fill="Wheat" />
+                  <rect x="318" y="274" width="114" height="14" fill="BurlyWood" />
+                  <polygon points="318,274 432,274 427,260 323,260" fill="Wheat" />
+                  <rect x="323" y="247" width="104" height="13" fill="BurlyWood" />
+                  <polygon points="323,247 427,247 423,234 327,234" fill="Wheat" />
+                  <rect x="327" y="222" width="96" height="12" fill="BurlyWood" />
+                  <polygon points="327,222 423,222 420,211 330,211" fill="Wheat" />
                 </g>
                 <!-- Second Floor Bedroom Furniture -->
                 <g id="bedroom-furniture">
                   <!-- Left Bedroom (150-300) -->
                   <!-- Nightstand -->
-                  <rect x="270" y="150" width="45" height="30" fill="#8B4513" stroke="#654321" stroke-width="0" />
+                  <rect x="270" y="150" width="45" height="30" fill="Thistle" />
                   <!-- Drawer -->
-                  <polygon points="277,158 308,158 313,172 272,172" fill="SandyBrown" stroke="#654321" stroke-width="0" />
+                  <polygon points="277,158 308,158 313,172 272,172" fill="SandyBrown" />
                   <g id="nightstandDrawer" onclick="openDrawer()" class="closed">
-                    <rect x="272" y="158" width="41" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                    <circle cx="293" cy="165" r="3.5" fill="#654321" />
+                    <rect x="272" y="158" width="41" height="15" fill="RosyBrown" />
+                    <circle cx="293" cy="165" r="3.5" fill="SandyBrown" />
                   </g>
                   <!-- Legs -->
-                  <rect x="275" y="180" width="8" height="25" fill="#654321" />
-                  <rect x="301" y="180" width="8" height="25" fill="#654321" />
+                  <rect x="275" y="180" width="8" height="25" fill="SandyBrown" />
+                  <rect x="301" y="180" width="8" height="25" fill="SandyBrown" />
                   <!-- Lounge chair -->
                   <g>
                     <!-- Back rest (angled) -->
-                    <path d="M 190 170 L 185 140 L 195 140 L 200 170 Z" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <path d="M 190 173 C 189 170 182 134 188 132 C 188 132 193 131 197 132 C 200 133 201 157 201 170 Z" fill="Tan" />
+                    <!-- Legs -->
+                    <rect x="190" y="185" width="50" height="20" fill="url(#chair)" />
                     <!-- Seat -->
-                    <rect x="190" y="165" rx="3" ry="3" width="50" height="25" fill="#8B7355" stroke="#654321" stroke-width="0" />
-                    <!-- Front legs -->
-                    <rect x="230" y="190" width="8" height="15" fill="#654321" />
-                    <!-- Back legs -->
-                    <rect x="192" y="190" width="8" height="15" fill="#654321" />
+                    <rect x="190" y="165" rx="3" ry="3" width="50" height="25" fill="Tan" />
                   </g>
                   <!-- Middle Bedroom (300-450) -->
                   <!-- Bed -->
@@ -242,11 +255,11 @@
                     <!-- Pillow -->
                     <rect x="360" y="130" rx="5" ry="5" width="60" height="15" fill="white" stroke-width="0" />
                     <!-- Mattress -->
-                    <rect x="340" y="140" rx="6" ry="6" width="100" height="50" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <rect x="340" y="140" rx="10" ry="10" width="100" height="50" fill="AntiqueWhite" />
                     <!-- Front legs -->
-                    <rect x="425" y="190" width="8" height="15" fill="#654321" />
+                    <rect x="420" y="190" width="8" height="15" fill="SandyBrown" />
                     <!-- Back legs -->
-                    <rect x="345" y="190" width="8" height="15" fill="#654321" />
+                    <rect x="350" y="190" width="8" height="15" fill="SandyBrown" />
                   </g>
                   <g id="sleepingWoman">
                     <!-- Sleeping woman -->
@@ -256,32 +269,33 @@
                   </g>
                   <!-- Right Bedroom (450-600) -->
                   <!-- Dresser -->
-                  <rect x="480" y="130" width="100" height="60" fill="#8B4513" stroke="#654321" stroke-width="0" />
-                  <!-- Drawers -->
-                  <rect x="483" y="134" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                  <polygon points="488,152 572,152 577,167 483,167" fill="SandyBrown" stroke="#654321" stroke-width="0" />
-                  <polygon points="488,170 572,170 577,185 483,185" fill="SandyBrown" stroke="#654321" stroke-width="0" />
-                  <g id="topsDrawer" onclick="newTop()" class="closed">
-                    <rect x="483" y="152" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                    <circle cx="518" cy="160" r="3" fill="#654321" />
-                    <circle cx="540" cy="160" r="3" fill="#654321" />
-                  </g>
-                  <g id="bottomsDrawer" onclick="newBottom()" class="closed">
-                    <rect x="483" y="170" width="94" height="15" fill="#765432" stroke="#654321" stroke-width="0" />
-                    <circle cx="518" cy="178" r="3" fill="#654321" />
-                    <circle cx="540" cy="178" r="3" fill="#654321" />
-                  </g>
-                  <!-- Drawer knobs -->
-                  <circle cx="518" cy="141" r="3" fill="#654321" />
-                  <circle cx="540" cy="141" r="3" fill="#654321" />
+                  <rect x="480" y="130" width="100" height="60" fill="SaddleBrown" />
                   <!-- Dresser legs -->
-                  <rect x="495" y="190" width="8" height="15" fill="#654321" />
-                  <rect x="555" y="190" width="8" height="15" fill="#654321" />
+                  <rect x="482" y="185" rx="3" ry="3" width="96" height="20" fill="SaddleBrown" />
+                  <!-- Drawers -->
+                  <rect x="483" y="134" width="94" height="15" fill="Sienna" />
+                  <!-- Top Drawer -->
+                  <rect x="500" y="139" height="3" width="20" fill="SaddleBrown" />
+                  <rect x="540" y="139" height="3" width="20" fill="SaddleBrown" />
+                  <!-- Middle Drawer (Tops) -->
+                  <polygon points="488,152 572,152 577,167 483,167" fill="Chocolate" />
+                  <g id="topsDrawer" onclick="newTop()" class="closed">
+                    <rect x="483" y="152" width="94" height="15" fill="Sienna" />
+                    <rect x="500" y="157" height="3" width="20" fill="SaddleBrown" />
+                    <rect x="540" y="157" height="3" width="20" fill="SaddleBrown" />
+                  </g>
+                  <!-- Bottom Drawer (Bottoms) -->
+                  <polygon points="488,170 572,170 577,185 483,185" fill="Chocolate" />
+                  <g id="bottomsDrawer" onclick="newBottom()" class="closed">
+                    <rect x="483" y="170" width="94" height="15" fill="Sienna" />
+                    <rect x="500" y="175" height="3" width="20" fill="SaddleBrown" />
+                    <rect x="540" y="175" height="3" width="20" fill="SaddleBrown" />
+                  </g>
                   <!-- Jewelry box on top of dresser -->
                   <g id="jewelryBox" onclick="toggleBox()">
-                    <rect x="500" y="115" width="25" height="15" fill="#A0522D" stroke="#654321" stroke-width="0" />
+                    <rect x="500" y="115" width="25" height="15" fill="DarkGoldenrod" />
                     <!-- Jewelry box lid -->
-                    <rect id="jewelryBoxLid" x="500" y="112" width="25" height="5" fill="#8B4513" stroke="#654321" stroke-width="1" />
+                    <rect id="jewelryBoxLid" x="500" y="112" width="25" height="5" fill="DarkGoldenrod" stroke="BurlyWood" stroke-width="1" />
                     <!-- Small clasp -->
                     <rect id="jewelryBoxClasp" x="511" y="115" width="3" height="2" fill="#FFD700" />
                   </g>
@@ -295,17 +309,17 @@
                     <circle cx="370" cy="275" r="2" fill="gold"/>
                     <circle cx="380" cy="275" r="2" fill="gold"/>
                   </g>
-                  <g id="doorKey" transform="rotate(-30) translate(-115, 128)">
-                    <circle cx="290" cy="140" r="4" stroke="gold" stroke-width="3"  fill="transparent"/>
-                    <rect x="289" y="145" width="3" height="10" stroke="gold" stroke-width="0" fill="gold"/>
-                    <rect x="292" y="148" width="3" height="2" stroke="gold" stroke-width="0" fill="gold"/>
-                    <rect x="292" y="151" width="3" height="3" stroke="gold" stroke-width="0" fill="gold"/>
+                  <g id="doorKey">
+                    <circle cx="288" cy="151" r="3" stroke="Goldenrod" stroke-width="4"  fill="transparent"/>
+                    <rect x="292" y="151" width="10" height="3" stroke="gold" stroke-width="0" fill="Goldenrod"/>
+                    <rect x="295" y="149" width="2.5" height="2" stroke="gold" stroke-width="0" fill="Goldenrod"/>
+                    <rect x="299" y="148" width="3" height="4" stroke="gold" stroke-width="0" fill="Goldenrod"/>
                   </g>
                   <!-- Shoe Prints -->
                   <g id="shoePrints">
-                    <ellipse cx="250" cy="420" rx="15" ry="8" fill="#654321" opacity="0.5"/>
-                    <ellipse cx="270" cy="440" rx="15" ry="8" fill="#654321" opacity="0.5"/>
-                    <ellipse cx="290" cy="460" rx="15" ry="8" fill="#654321" opacity="0.5"/>
+                    <ellipse cx="250" cy="420" rx="15" ry="8" fill="BurlyWood" opacity="0.5"/>
+                    <ellipse cx="270" cy="440" rx="15" ry="8" fill="BurlyWood" opacity="0.5"/>
+                    <ellipse cx="290" cy="460" rx="15" ry="8" fill="BurlyWood" opacity="0.5"/>
                   </g>
                   <!-- Police Car -->
                   <g id="policeCar">
@@ -350,20 +364,20 @@
                   </g>
                   <!-- Dining Table -->
                   <g id="dining-table">
-                    <ellipse cx="560" cy="325" rx="30" ry="5" />
-                    <path d="M 560 330 L 560 350 Q 560 375 540 375" fill="transparent" stroke="black" stroke-width="3" />
-                    <path d="M 560 330 L 560 350 Q 560 375 580 375" fill="transparent" stroke="black" stroke-width="3" />
+                    <ellipse cx="560" cy="325" rx="30" ry="5" fill="Peru" />
+                    <path d="M 560 330 L 560 350 Q 560 375 540 375" fill="transparent" stroke="Peru" stroke-width="3" />
+                    <path d="M 560 330 L 560 350 Q 560 375 580 375" fill="transparent" stroke="Peru" stroke-width="3" />
                   </g>
                   <!-- Dining chair -->
                   <g id="dining-chair">
                     <!-- Back rest -->
-                    <path d="M 475 345 L 475 300 L 485 300 L 485 345 Z" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <path d="M 475 345 L 475 300 L 485 300 L 485 345 Z" fill="Peru" />
                     <!-- Seat -->
-                    <rect x="475" y="340" rx="1" ry="1" width="50" height="10" fill="#8B7355" stroke="#654321" stroke-width="0" />
+                    <rect x="475" y="340" rx="1" ry="1" width="50" height="10" fill="Peru" />
                     <!-- Front legs -->
-                    <rect x="515" y="350" width="6" height="25" fill="#654321" />
+                    <rect x="515" y="350" width="6" height="25" fill="Peru" />
                     <!-- Back legs -->
-                    <rect x="477" y="350" width="6" height="25" fill="#654321" />
+                    <rect x="477" y="350" width="6" height="25" fill="Peru" />
                   </g>
                   <!-- Knife -->
                   <g id="knife">
